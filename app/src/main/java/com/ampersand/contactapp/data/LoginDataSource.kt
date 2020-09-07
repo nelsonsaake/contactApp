@@ -19,28 +19,27 @@ class LoginDataSource {
     fun login(username: String, password: String): Result<LoggedInUser> {
         try {
 
-            // so I will make an API call here
-            // using the user name and password
-            // if It was successfull, I just log the user in otherwise I through and error
-            // that's it
+            var user: LoggedInUser? = null
             loginApiService.login(username, password).enqueue(object : Callback<LoginResponse> {
+
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     throw t
                 }
-
                 override fun onResponse(
                     call: Call<LoginResponse>,
                     response: Response<LoginResponse>
                 ) {
                     if(response.code() != 200) throw Throwable("failed to get user")
                     loginResponse = response.body()
+
+                    if( loginResponse != null) {
+
+                        user = loginResponse!!.user!!
+                        user?.token = loginResponse!!.token!!
+                    }
                 }
             })
 
-            var name = "nelson"
-            name = loginResponse?.user?.firstName!!
-
-            val user = LoggedInUser(java.util.UUID.randomUUID().toString(), name)
             return Result.Success(user)
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))
