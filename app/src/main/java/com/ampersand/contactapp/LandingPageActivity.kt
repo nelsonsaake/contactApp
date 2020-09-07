@@ -15,7 +15,7 @@ class LandingPageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing_page)
 
         showNameFragment()
-        getStartedTextView.setOnClickListener {
+        logo.setOnClickListener {
             showIntroFragment()
         }
     }
