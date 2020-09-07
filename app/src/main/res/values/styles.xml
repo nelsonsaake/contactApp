@@ -7,4 +7,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="introTextStyle">
+        <item name="fontFamily">BrownPro-Regular</item>
+        <item name="android:textSize">18dp</item>
+        <item name="color">#4C4D4F</item>
+    </style>
+
+    <style name="getStartedStyle" parent="introTextStyle">
+        <item name="android:textSize">15dp</item>
+    </style>
 </resources>

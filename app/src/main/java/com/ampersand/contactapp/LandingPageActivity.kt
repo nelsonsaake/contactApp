@@ -2,6 +2,8 @@ package com.ampersand.contactapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.fragment_landing_page_intro.*
+import kotlinx.android.synthetic.main.fragment_landing_page_name.*
 
 class LandingPageActivity : AppCompatActivity() {
 
@@ -13,7 +15,9 @@ class LandingPageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_landing_page)
 
         showNameFragment()
-
+        getStartedTextView.setOnClickListener {
+            showIntroFragment()
+        }
     }
 
     private fun showNameFragment() {
