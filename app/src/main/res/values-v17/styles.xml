@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="signInButtonStyle" parent="introTextStyle">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="color">#4A4A4A</item>
+    </style>
+</resources>

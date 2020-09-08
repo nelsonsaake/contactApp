@@ -16,4 +16,22 @@
     <style name="getStartedStyle" parent="introTextStyle">
         <item name="android:textSize">15dp</item>
     </style>
+
+    <style name="keepInTouchStyle" parent="introTextStyle">
+        <item name="textAllCaps">true</item>
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="signInOrRegisterStyle" parent="introTextStyle">
+        <item name="android:textSize">13dp</item>
+        <item name="color">#9B9B9B</item>
+    </style>
+
+    <style name="signInButtonStyle" parent="introTextStyle">
+        <item name="android:textSize">15dp</item>
+        <item name="color">#4A4A4A</item>
+        <item name="textAppearanceButton">@style/signInButtonStyle</item>
+        <item name="backgroundColor">@color/colorBackground</item>
+        <item name="borderlessButtonStyle">true</item>
+    </style>
 </resources>
