@@ -1,5 +1,6 @@
 package com.ampersand.contactapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.fragment_landing_page_intro.*
@@ -18,6 +19,10 @@ class LandingPageActivity : AppCompatActivity() {
         logo.setOnClickListener {
             showIntroFragment()
         }
+
+        getStartedTextView.setOnClickListener {
+            startSignInOrRegisterActivity()
+        }
     }
 
     private fun showNameFragment() {
@@ -34,5 +39,10 @@ class LandingPageActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(R.id.landingPageFragmentContainer, introFragment)
             .commitNow()
+    }
+
+    private fun startSignInOrRegisterActivity(){
+
+        startActivity(Intent(this, SignInOrRegisterActivity::class.java))
     }
 }
