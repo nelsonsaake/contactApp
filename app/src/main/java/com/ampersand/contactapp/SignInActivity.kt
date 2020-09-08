@@ -14,6 +14,10 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun maskPassword() {
+
         editTextTextPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
+
+        // show password char
+        // editTextTextPassword.transformationMethod = PasswordTransformationMethod.getInstance()
     }
 }

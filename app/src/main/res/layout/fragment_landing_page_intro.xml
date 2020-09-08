@@ -5,13 +5,14 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layoutDescription="@xml/fragment_landing_page_intro_scene">
+    android:orientation="vertical">
+
 
     <ImageView
         android:id="@+id/logo2"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        app:layout_constraintBottom_toTopOf="@+id/ampersandContactTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -21,23 +22,12 @@
         android:id="@+id/ampersandContactTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="160dp"
         android:text="AMPERSAND \n CONTACTS"
         android:textAppearance="@style/introTextStyle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo2" />
-
-    <TextView
-        android:id="@+id/getStartedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GET STARTED"
-        android:textAppearance="@style/getStartedStyle"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/ampersandContactTextView"
-        app:layout_constraintStart_toStartOf="@+id/ampersandContactTextView"
-        app:layout_constraintTop_toBottomOf="@+id/ampersandContactTextView" />
+        app:layout_constraintEnd_toEndOf="@+id/logo2"
+        app:layout_constraintStart_toStartOf="@+id/logo2"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <View
         android:id="@+id/divider"
@@ -50,7 +40,20 @@
         android:layout_marginRight="3dp"
         android:background="@color/colorDivider"
         app:layout_constraintEnd_toEndOf="@+id/getStartedTextView"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/getStartedTextView"
         app:layout_constraintTop_toBottomOf="@+id/getStartedTextView" />
+
+    <TextView
+        android:id="@+id/getStartedTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GET STARTED"
+        android:textAppearance="@style/getStartedStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ampersandContactTextView"
+        app:layout_constraintStart_toStartOf="@+id/ampersandContactTextView"
+        app:layout_constraintTop_toBottomOf="@+id/ampersandContactTextView" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
