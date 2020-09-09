@@ -6,7 +6,12 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+    
+    <style name="NoActionBar" parent="AppTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    
     <style name="introTextStyle">
         <item name="fontFamily">BrownPro-Regular</item>
         <item name="android:textSize">18dp</item>
@@ -40,6 +45,11 @@
 
     <style name="dp14" parent="getStartedStyle">
         <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="errorTextStyle" parent="getStartedStyle">
+        <item name="android:textSize">13dp</item>
+        <item name="android:textColor">#AF4830</item>
     </style>
 
 </resources>
