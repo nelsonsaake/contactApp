@@ -52,4 +52,8 @@
         <item name="android:textColor">#AF4830</item>
     </style>
 
+    <style name="dp17White" parent="dp15">
+        <item name="android:textSize">17dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
 </resources>

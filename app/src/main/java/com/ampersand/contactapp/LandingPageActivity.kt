@@ -4,9 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_landing_page.*
-import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.android.synthetic.main.fragment_landing_page_intro.*
-import kotlinx.android.synthetic.main.fragment_landing_page_name.*
 
 class LandingPageActivity : AppCompatActivity() {
 

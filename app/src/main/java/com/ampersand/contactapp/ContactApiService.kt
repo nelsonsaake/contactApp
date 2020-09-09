@@ -13,7 +13,7 @@ interface ContactApiService {
 //        Accept: application/json
 //    }")
     @POST("/login")
-    fun login(@Body loginRequest: LoginRequestBody) : Call<LoginResponse>
+    fun login(@Body logInRequest: LogInRequestBody) : Call<LogInResponse>
 
 //    @Headers({
 //        "Content-Type: application/json",

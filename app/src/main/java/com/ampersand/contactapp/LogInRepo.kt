@@ -7,9 +7,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SignInRepo {
+class LogInRepo {
 
-     val countryApiService = ContactApiService.create()
+     val contactApiService = ContactApiService.create()
      val loggedInUser = MutableLiveData<LoggedInUser>()
      val loginError = MutableLiveData<String>()
      val regError = MutableLiveData<String>()
@@ -71,12 +71,12 @@ class SignInRepo {
             linkedIn = linkedIn,
             website = website
         )
-        countryApiService.register(regRequestBody).enqueue(regCallback)
+        contactApiService.register(regRequestBody).enqueue(regCallback)
     }
 
-    val loginCallback = object : Callback<LoginResponse> {
+    val loginCallback = object : Callback<LogInResponse> {
 
-        override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+        override fun onFailure(call: Call<LogInResponse>, t: Throwable) {
 
             val localisedMsg = "localised msg: ${t.localizedMessage}"
             val msg = "msg: ${t.message}"
@@ -85,8 +85,8 @@ class SignInRepo {
         }
 
         override fun onResponse(
-            call: Call<LoginResponse>,
-            response: Response<LoginResponse>
+            call: Call<LogInResponse>,
+            response: Response<LogInResponse>
         ) {
 
             loggedInUser.value = response.body() as LoggedInUser
@@ -95,10 +95,8 @@ class SignInRepo {
 
     fun login(email: String, password: String) {
 
-        val loginRequestBody = LoginRequestBody(email, password)
-        countryApiService.login(loginRequestBody).enqueue(loginCallback)
+        val loginRequestBody = LogInRequestBody(email, password)
+        contactApiService.login(loginRequestBody).enqueue(loginCallback)
     }
-
-
 
 }
