@@ -110,4 +110,16 @@ class SignInActivity : AppCompatActivity() {
 
         errorText.text = ""
     }
+
+    private fun showServerSideError(err: String){
+
+        AlertDialog.Builder(context)
+            .setTitle("Login Error")
+            .setMessage("An error occurred during your login. Please try again in a few moments")
+            .setNegativeButton("Cancel", null)
+            .setPositiveButton("Try Again", signIn())
+           /*.setIcon()*/
+            .show()
+    }
+
 }

@@ -56,4 +56,12 @@
         <item name="android:textSize">17dp</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="dp15White" parent="dp15">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="regStyle" parent="">
+        <item name="android:textAppearance">@style/dp15</item>
+    </style>
 </resources>
