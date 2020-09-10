@@ -7,6 +7,7 @@
     tools:context=".RegActivity">
 
     <ScrollView
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
@@ -17,8 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="wrap_content">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             style="@style/dp15"
@@ -34,7 +34,9 @@
                 <FrameLayout
                     android:id="@+id/regPhotoContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:foregroundGravity="center">
 
                 </FrameLayout>
             </LinearLayout>

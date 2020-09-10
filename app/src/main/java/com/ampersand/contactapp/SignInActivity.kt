@@ -1,13 +1,19 @@
 package com.ampersand.contactapp
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_sign_in.*
+
 
 class SignInActivity : AppCompatActivity() {
 
-    private lateinit val viewModel : LogInViewModel
+    private val viewModel : LogInViewModel
 
     init {
 
@@ -41,17 +47,17 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setCustomToolbar() {
 
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
-        getSupportActionBar().setCustomView(R.layout.toolbar_sign_in)
+        getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+        getSupportActionBar()?.setCustomView(R.layout.toolbar_sign_in)
     }
 
     private fun setBackNavigation() {
 
-        val toolbar = R.id.toolbar as Toolbar
+        val toolbar = R.id.customToolbar as Toolbar
         setSupportActionBar(toolbar)
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true)
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -72,13 +78,13 @@ class SignInActivity : AppCompatActivity() {
 
         // sign
         if (isEmailValid && isPassword) {
-            viewModel.login(emailEdit.text, passwordEdit.text)
+            viewModel.login(emailEdit.text.toString(), passwordEdit.text.toString())
         }
     }
 
     private fun validateEmail(): Boolean {
 
-        val isEmailValid = true
+        var isEmailValid = true
 
         // make sure email ends with "@ampersandllc.co" aka ACCEPTED_EMAIL_DOMAIN
         val email = emailEdit.text.toString().toLowerCase()
@@ -91,7 +97,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun validatePassword(): Boolean {
 
-        val isPasswordValid = true
+        var isPasswordValid = true
 
         val password = passwordEdit.text.toString()
         isPasswordValid = (password.length < 8) as Boolean
@@ -113,11 +119,11 @@ class SignInActivity : AppCompatActivity() {
 
     private fun showServerSideError(err: String){
 
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(this)
             .setTitle("Login Error")
             .setMessage("An error occurred during your login. Please try again in a few moments")
             .setNegativeButton("Cancel", null)
-            .setPositiveButton("Try Again", signIn())
+            .setPositiveButton("Try Again", DialogInterface.OnClickListener { arg0, arg1 -> signIn()})
            /*.setIcon()*/
             .show()
     }

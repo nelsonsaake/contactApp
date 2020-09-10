@@ -61,7 +61,12 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-    <style name="regStyle" parent="">
+    <style name="regStyle" parent="AppTheme">
         <item name="android:textAppearance">@style/dp15</item>
+    </style>
+
+    <style name="dp15Pink" parent="dp15">
+        <item name="android:textSize">15dp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 </resources>

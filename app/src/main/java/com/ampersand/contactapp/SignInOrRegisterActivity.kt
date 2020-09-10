@@ -13,5 +13,9 @@ class SignInOrRegisterActivity : AppCompatActivity() {
         signInButton.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
         }
+
+        registerButton.setOnClickListener {
+            startActivity(Intent(this, RegActivity::class.java))
+        }
     }
 }
