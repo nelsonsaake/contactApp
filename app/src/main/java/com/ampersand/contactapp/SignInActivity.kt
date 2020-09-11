@@ -3,34 +3,34 @@ package com.ampersand.contactapp
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
 class SignInActivity : AppCompatActivity() {
 
-    private val viewModel : LogInViewModel
-
-    init {
-
-        viewModel = ViewModelProvider(this).get(LogInViewModel::class.java)
-    }
+    private lateinit var viewModel: LogInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        setCustomToolbar()
-        setBackNavigation()
+        initViewModel()
+        setupCustomToolbar()
         maskPassword()
         listenToSignInButton()
     }
 
-    private fun listenToSignInButton(){
+    private fun initViewModel() {
+
+        viewModel = ViewModelProvider(this).get(LogInViewModel::class.java)
+    }
+
+    private fun listenToSignInButton() {
 
         signInButton.setOnClickListener {
             signIn()
@@ -45,24 +45,16 @@ class SignInActivity : AppCompatActivity() {
         // editTextTextPassword.transformationMethod = PasswordTransformationMethod.getInstance()
     }
 
-    private fun setCustomToolbar() {
+    private fun setupCustomToolbar() {
 
-        getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
-        getSupportActionBar()?.setCustomView(R.layout.toolbar_sign_in)
-    }
-
-    private fun setBackNavigation() {
-
-        val toolbar = R.id.customToolbar as Toolbar
-        setSupportActionBar(toolbar)
-
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar?.setCustomView(R.layout.toolbar_center_title_and_back_button)
+        supportActionBar
+            ?.customView
+            ?.findViewById<ImageView>(R.id.backButton)
+            ?.setOnClickListener {
+                finish()
+            }
     }
 
     fun signIn() {
@@ -84,11 +76,9 @@ class SignInActivity : AppCompatActivity() {
 
     private fun validateEmail(): Boolean {
 
-        var isEmailValid = true
-
         // make sure email ends with "@ampersandllc.co" aka ACCEPTED_EMAIL_DOMAIN
         val email = emailEdit.text.toString().toLowerCase()
-        isEmailValid = email.endsWith(ACCEPTED_EMAIL_DOMAIN)
+        var isEmailValid = email.endsWith(ACCEPTED_EMAIL_DOMAIN)
 
         if (!isEmailValid) showClientSideError("email provided is not an ampersand email: $email")
 
@@ -97,12 +87,10 @@ class SignInActivity : AppCompatActivity() {
 
     private fun validatePassword(): Boolean {
 
-        var isPasswordValid = true
-
         val password = passwordEdit.text.toString()
-        isPasswordValid = (password.length < 8) as Boolean
+        var isPasswordValid = (password.length < 8) as Boolean
 
-        if(!isPasswordValid) showClientSideError("password provided is too short")
+        if (!isPasswordValid) showClientSideError("password provided is too short")
 
         return isPasswordValid
     }
@@ -112,19 +100,19 @@ class SignInActivity : AppCompatActivity() {
         errorText.text = msg
     }
 
-    private fun clearClientSideError(){
+    private fun clearClientSideError() {
 
         errorText.text = ""
     }
 
-    private fun showServerSideError(err: String){
+    private fun showServerSideError(err: String) {
 
         AlertDialog.Builder(this)
             .setTitle("Login Error")
             .setMessage("An error occurred during your login. Please try again in a few moments")
             .setNegativeButton("Cancel", null)
-            .setPositiveButton("Try Again", DialogInterface.OnClickListener { arg0, arg1 -> signIn()})
-           /*.setIcon()*/
+            .setPositiveButton("Try Again", DialogInterface.OnClickListener { _, _ -> signIn() })
+            /*.setIcon()*/
             .show()
     }
 

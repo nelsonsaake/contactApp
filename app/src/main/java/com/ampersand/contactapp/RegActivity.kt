@@ -18,7 +18,6 @@ class RegActivity : AppCompatActivity() {
         setContentView(R.layout.activity_reg)
 
         setCustomToolbar()
-        setBackNavigation()
         maskPassword()
         showAddPhotoFragment()
     }
@@ -34,11 +33,16 @@ class RegActivity : AppCompatActivity() {
     private fun setCustomToolbar() {
 
         getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
-        getSupportActionBar()?.setCustomView(R.layout.toolbar_sign_in)
+        getSupportActionBar()?.setCustomView(R.layout.toolbar_center_title_and_back_button)
         getSupportActionBar()
             ?.customView
-            ?.findViewById<TextView>(R.id.customToolBarTitleText)
+            ?.findViewById<TextView>(R.id.customToolbarTitleText)
             ?.text = "Register"
+
+//        getSupportActionBar()
+//            ?.customView
+//            ?.findViewById<TextView>(R.id.customToolbarTitleText)
+//            ?.text = "Register"
     }
 
     private fun setBackNavigation() {
@@ -54,7 +58,7 @@ class RegActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.landingPageFragmentContainer, addPhotoFragment)
+            .replace(R.id.regPhotoContainer, addPhotoFragment)
             .commitNow()
     }
 
@@ -62,7 +66,7 @@ class RegActivity : AppCompatActivity() {
 
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.landingPageFragmentContainer, editPhotoFragment)
+            .replace(R.id.regPhotoContainer, editPhotoFragment)
             .commitNow()
     }
 
