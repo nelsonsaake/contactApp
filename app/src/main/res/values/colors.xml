@@ -5,4 +5,5 @@
     <color name="colorAccent">@color/colorPrimaryDark</color>
     <color name="colorBackground">#F4F4F0</color>
     <color name="colorDivider">#C15837</color>
+    <color name="colorGray">#BABABA</color>
 </resources>

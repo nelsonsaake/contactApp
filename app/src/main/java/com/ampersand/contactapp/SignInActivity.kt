@@ -34,6 +34,10 @@ class SignInActivity : AppCompatActivity() {
 
         signInButton.setOnClickListener {
             signIn()
+            
+            // at this point I will just ignore the sign in and just move to the next page
+            // definitely todo
+            startActivity(Intent(this, ExchangeContactActivity::class.java))
         }
     }
 
@@ -47,14 +51,17 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setupCustomToolbar() {
 
-        supportActionBar?.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
-        supportActionBar?.setCustomView(R.layout.toolbar_center_title_and_back_button)
-        supportActionBar
-            ?.customView
-            ?.findViewById<ImageView>(R.id.backButton)
-            ?.setOnClickListener {
-                finish()
+        supportActionBar?.apply{
+
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.toolbar_center_title_and_back_button)
+            customView.apply {
+
+                findViewById<ImageView>(R.id.backButton)?.setOnClickListener {
+                    finish()
+                }
             }
+        }
     }
 
     fun signIn() {

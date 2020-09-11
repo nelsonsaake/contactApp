@@ -2,10 +2,10 @@ package com.ampersand.contactapp
 
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import kotlinx.android.synthetic.main.activity_reg.*
 
 class RegActivity : AppCompatActivity() {
@@ -17,7 +17,7 @@ class RegActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reg)
 
-        setCustomToolbar()
+        setupCustomToolbar()
         maskPassword()
         showAddPhotoFragment()
     }
@@ -30,29 +30,22 @@ class RegActivity : AppCompatActivity() {
         // editTextTextPassword.transformationMethod = PasswordTransformationMethod.getInstance()
     }
 
-    private fun setCustomToolbar() {
+    private fun setupCustomToolbar() {
 
-        getSupportActionBar()?.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
-        getSupportActionBar()?.setCustomView(R.layout.toolbar_center_title_and_back_button)
-        getSupportActionBar()
-            ?.customView
-            ?.findViewById<TextView>(R.id.customToolbarTitleText)
-            ?.text = "Register"
+        supportActionBar?.apply {
 
-//        getSupportActionBar()
-//            ?.customView
-//            ?.findViewById<TextView>(R.id.customToolbarTitleText)
-//            ?.text = "Register"
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setCustomView(R.layout.toolbar_center_title_and_back_button)
+            customView.apply {
+
+                findViewById<TextView>(R.id.customToolbarTitleText).text = "Register"
+                findViewById<ImageView>(R.id.backButton).setOnClickListener {
+                    finish()
+                }
+            }
+        }
     }
 
-    private fun setBackNavigation() {
-
-        val toolbar = R.id.customToolbar as Toolbar
-        setSupportActionBar(toolbar)
-
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
-    }
 
     private fun showAddPhotoFragment() {
 

@@ -27,7 +27,7 @@
         <item name="android:textSize">15dp</item>
     </style>
 
-    <style name="signInOrRegisterStyle" parent="introTextStyle">
+    <style name="dp13Gray" parent="introTextStyle">
         <item name="android:textSize">13dp</item>
         <item name="android:textColor">#9B9B9B</item>
     </style>
@@ -68,5 +68,13 @@
     <style name="dp15Pink" parent="dp15">
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="dp15Gray" parent="dp13Gray">
+        <item name="android:textSize">15dp</item>
+    </style>
+
+    <style name="dp13Red" parent="dp13Gray">
+        <item name="android:textColor">#AF4830</item>
     </style>
 </resources>

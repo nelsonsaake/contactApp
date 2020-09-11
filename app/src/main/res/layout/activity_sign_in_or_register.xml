@@ -40,7 +40,7 @@
         android:layout_width="0dp"
         android:layout_height="18dp"
         android:text="Sign in or register with your Ampersand email"
-        android:textAppearance="@style/signInOrRegisterStyle"
+        android:textAppearance="@style/dp13Gray"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

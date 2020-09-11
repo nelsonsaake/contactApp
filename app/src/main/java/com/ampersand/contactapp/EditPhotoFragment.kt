@@ -12,7 +12,7 @@ class EditPhotoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_edit_photo, container, false)
+        return inflater.inflate(R.layout.fragment_reg_page_edit_photo, container, false)
     }
 
 }
