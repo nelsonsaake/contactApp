@@ -1,6 +1,7 @@
 package com.ampersand.contactapp
 
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
 import android.widget.ImageView
@@ -36,7 +37,7 @@ class SignInActivity : AppCompatActivity() {
             signIn()
             
             // at this point I will just ignore the sign in and just move to the next page
-            // definitely todo
+            // definitely todo()
             startActivity(Intent(this, ExchangeContactActivity::class.java))
         }
     }

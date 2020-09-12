@@ -12,7 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ExchangeContactActivity"></activity>
+        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ScanCodeActivity" />
+        <activity android:name=".ExchangeContactActivity" />
         <activity android:name=".RegActivity" />
         <activity android:name=".SignInActivity" />
         <activity
