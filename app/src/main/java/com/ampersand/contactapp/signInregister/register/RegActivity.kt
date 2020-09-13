@@ -1,4 +1,4 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.signInregister.register
 
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
@@ -6,12 +6,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import com.ampersand.contactapp.exchangecontanct.ExchangeContactAddPhotoFragment
+import com.ampersand.contactapp.exchangecontanct.ExchangeContactEditPhotoFragment
+import com.ampersand.contactapp.R
 import kotlinx.android.synthetic.main.activity_reg.*
 
 class RegActivity : AppCompatActivity() {
 
-    private val addPhotoFragment = ExchangeContactAddPhotoFragment()
-    private val editPhotoFragment = ExchangeContactEditPhotoFragment()
+    private val addPhotoFragment =
+        ExchangeContactAddPhotoFragment()
+    private val editPhotoFragment =
+        ExchangeContactEditPhotoFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

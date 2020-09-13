@@ -1,7 +1,13 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.datasource
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.ampersand.contactapp.signInregister.register.model.Reg201Response
+import com.ampersand.contactapp.signInregister.register.model.RegErrResponse
+import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
+import com.ampersand.contactapp.signInregister.register.model.RegResponse
+import com.ampersand.contactapp.signInregister.signin.model.LogInRequestBody
+import com.ampersand.contactapp.signInregister.signin.model.LogInResponse
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
@@ -10,7 +16,8 @@ import retrofit2.Response
 class ContactApiRepo {
 
     var profile = MutableLiveData<User>()
-    val contactApiService = ContactApiService.create()
+    val contactApiService =
+        ContactApiService.create()
     val loggedInUser = MutableLiveData<LoggedInUser>()
     val loginError = MutableLiveData<String>()
     val regError = MutableLiveData<String>()
@@ -61,17 +68,18 @@ class ContactApiRepo {
         website: String
     ) {
 
-        val regRequestBody = RegRequestBody(
-            email = email,
-            password = password,
-            firstName = firstName,
-            lastName = lastName,
-            photo = photo,
-            phoneNumber = phoneNumber,
-            twitter = twitter,
-            linkedIn = linkedIn,
-            website = website
-        )
+        val regRequestBody =
+            RegRequestBody(
+                email = email,
+                password = password,
+                firstName = firstName,
+                lastName = lastName,
+                photo = photo,
+                phoneNumber = phoneNumber,
+                twitter = twitter,
+                linkedIn = linkedIn,
+                website = website
+            )
         contactApiService.register(regRequestBody).enqueue(regCallback)
     }
 
@@ -96,7 +104,11 @@ class ContactApiRepo {
 
     fun login(email: String, password: String) {
 
-        val loginRequestBody = LogInRequestBody(email, password)
+        val loginRequestBody =
+            LogInRequestBody(
+                email,
+                password
+            )
         contactApiService.login(loginRequestBody).enqueue(loginCallback)
     }
 

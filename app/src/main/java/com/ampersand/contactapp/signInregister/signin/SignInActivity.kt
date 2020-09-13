@@ -1,4 +1,4 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.signInregister.signin
 
 import android.content.DialogInterface
 import android.content.Intent
@@ -9,6 +9,10 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.ampersand.contactapp.datasource.ACCEPTED_EMAIL_DOMAIN
+import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.exchangecontanct.ExchangeContactActivity
+import com.ampersand.contactapp.R
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 

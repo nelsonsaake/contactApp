@@ -1,9 +1,11 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
+import com.ampersand.contactapp.profile.ProfileActivity
+import com.ampersand.contactapp.R
 import kotlinx.android.synthetic.main.activity_exchange_contact.*
 
 class ExchangeContactActivity : AppCompatActivity() {

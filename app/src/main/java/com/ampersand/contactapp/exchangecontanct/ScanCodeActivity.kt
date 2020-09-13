@@ -1,9 +1,9 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.android.synthetic.main.activity_exchange_contact.*
+import com.ampersand.contactapp.R
 import kotlinx.android.synthetic.main.activity_scan_code.*
 
 class ScanCodeActivity : AppCompatActivity() {

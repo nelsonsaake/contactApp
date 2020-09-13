@@ -1,6 +1,6 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.signInregister.register.model
 
-data class User(
+data class RegRequestBody(
     val email: String,
     val password: String,
     val firstName: String,

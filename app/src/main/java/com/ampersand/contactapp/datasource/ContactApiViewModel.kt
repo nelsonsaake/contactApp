@@ -1,4 +1,4 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.datasource
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

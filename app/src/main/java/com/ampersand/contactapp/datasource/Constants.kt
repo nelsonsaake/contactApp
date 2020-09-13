@@ -1,4 +1,4 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.datasource
 
 const val LOG_TAG = "com.contactapp"
 

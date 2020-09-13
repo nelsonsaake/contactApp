@@ -12,16 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfileActivity"></activity>
-        <activity android:name=".ScanCodeActivity" />
-        <activity android:name=".ExchangeContactActivity" />
-        <activity android:name=".RegActivity" />
-        <activity android:name=".SignInActivity" />
+        <activity android:name=".profile.ProfileActivity"></activity>
+        <activity android:name=".exchangecontanct.ScanCodeActivity" />
+        <activity android:name=".exchangecontanct.ExchangeContactActivity" />
+        <activity android:name=".signInregister.register.RegActivity" />
+        <activity android:name=".signInregister.signin.SignInActivity" />
         <activity
-            android:name=".SignInOrRegisterActivity"
+            android:name=".signInregister.SignInOrRegisterActivity"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".LandingPageActivity"
+            android:name=".landingpage.LandingPageActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

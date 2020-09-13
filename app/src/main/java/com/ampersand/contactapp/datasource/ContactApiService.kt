@@ -1,5 +1,9 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.datasource
 
+import com.ampersand.contactapp.signInregister.signin.model.LogInRequestBody
+import com.ampersand.contactapp.signInregister.signin.model.LogInResponse
+import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
+import com.ampersand.contactapp.signInregister.register.model.RegResponse
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

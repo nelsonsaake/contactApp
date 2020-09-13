@@ -1,4 +1,4 @@
-package com.ampersand.contactapp
+package com.ampersand.contactapp.profile
 
 import android.os.Bundle
 import android.widget.ImageView
@@ -7,12 +7,16 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.R
 
 class ProfileActivity : AppCompatActivity() {
 
     lateinit var viewModel : ContactApiViewModel
-    val profileLoadingFragment = ProfileLoadingFragment()
-    val  profileLoadedFragment = ProfileLoadedFragment()
+    val profileLoadingFragment =
+        ProfileLoadingFragment()
+    val  profileLoadedFragment =
+        ProfileLoadedFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
