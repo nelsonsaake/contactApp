@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/image"
     android:padding="20dp"
-    tools:context=".exchangecontanct.ExchangeContactAddPhotoFragment">
+    tools:context=".signInregister.register.RegAddPhotoFragment">
 
     <TextView
         android:id="@+id/editProfilePhotoText"

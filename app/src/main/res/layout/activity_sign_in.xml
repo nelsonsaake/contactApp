@@ -62,7 +62,7 @@
             android:background="@android:color/transparent"
             android:ems="10"
             android:gravity="right"
-            android:hint="john.smith@mail.com"
+            android:hint="johnsmith@ampersandllc.co"
             android:inputType="textEmailAddress" />
     </LinearLayout>
 

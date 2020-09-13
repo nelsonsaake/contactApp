@@ -65,7 +65,7 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint="joan.shay@sparrow.com"
+                    android:hint="johnsmith@ampersandllc.co"
                     android:inputType="textEmailAddress" />
             </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/firstNameText"
+                    android:id="@+id/regFirstNameText"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -125,7 +125,7 @@
                     android:text="First Name" />
 
                 <EditText
-                    android:id="@+id/firstNameEdit"
+                    android:id="@+id/regFirstNameEdit"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,7 +149,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/lastNameText"
+                    android:id="@+id/regLastNameText"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                     android:text="Last Name" />
 
                 <EditText
-                    android:id="@+id/lastNameEdit"
+                    android:id="@+id/regLastNameEdit"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -183,7 +183,41 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/phoneText"
+                    android:id="@+id/regRoleText"
+                    style="@style/regStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Role" />
+
+                <EditText
+                    android:id="@+id/regRoleEdit"
+                    style="@style/regStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:gravity="right"
+                    android:hint="Android developer" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/regPhoneText"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -193,7 +227,7 @@
                     android:text="Phone Number" />
 
                 <EditText
-                    android:id="@+id/phoneEdit"
+                    android:id="@+id/regPhoneEdit"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,6 +235,7 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:gravity="right"
+                    android:hint="0208811488"
                     android:inputType="phone" />
             </LinearLayout>
 
@@ -216,7 +251,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/twitterText"
+                    android:id="@+id/regTwitterText"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -226,7 +261,7 @@
                     android:text="Twitter" />
 
                 <EditText
-                    android:id="@+id/twitterEdit"
+                    android:id="@+id/regTwitterEdit"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -234,8 +269,7 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint='"@joansays"'
-                    android:inputType="textPersonName" />
+                    android:hint='"@joansays"' />
 
             </LinearLayout>
 
@@ -251,7 +285,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/linkedInText"
+                    android:id="@+id/regLinkedInText"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -261,7 +295,7 @@
                     android:text="LinkedIn" />
 
                 <EditText
-                    android:id="@+id/linkedInEdit"
+                    android:id="@+id/regLinkedInEdit"
                     style="@style/regStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -269,8 +303,7 @@
                     android:background="@android:color/transparent"
                     android:ems="10"
                     android:gravity="right"
-                    android:hint="/joan.shay"
-                    android:inputType="textPersonName" />
+                    android:hint="/joan.shay" />
 
             </LinearLayout>
 
@@ -282,8 +315,44 @@
                 android:layout_weight="1"
                 android:background="?android:attr/listDivider" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/regWebsiteText"
+                    style="@style/regStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Website" />
+
+                <EditText
+                    android:id="@+id/regWebsiteEdit"
+                    style="@style/regStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:ems="10"
+                    android:gravity="right"
+                    android:hint="abcwebsite.com" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/regWebsiteBottomDivider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="?android:attr/listDivider" />
+
             <Button
-                android:id="@+id/button"
+                android:id="@+id/regButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"

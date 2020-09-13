@@ -1,5 +1,6 @@
 package com.ampersand.contactapp.signInregister.signin
 
+import android.app.ProgressDialog
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -8,17 +9,19 @@ import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ACCEPTED_EMAIL_DOMAIN
 import com.ampersand.contactapp.datasource.ContactApiViewModel
 import com.ampersand.contactapp.exchangecontanct.ExchangeContactActivity
-import com.ampersand.contactapp.R
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
 class SignInActivity : AppCompatActivity() {
 
     private lateinit var viewModel: ContactApiViewModel
+    private lateinit var loggingInAnimationDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +30,7 @@ class SignInActivity : AppCompatActivity() {
         initViewModel()
         setupCustomToolbar()
         maskPassword()
-        listenToSignInButton()
+        onSignInButtonClicked()
     }
 
     private fun initViewModel() {
@@ -35,14 +38,11 @@ class SignInActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
     }
 
-    private fun listenToSignInButton() {
+    private fun onSignInButtonClicked() {
 
         signInButton.setOnClickListener {
+
             signIn()
-            
-            // at this point I will just ignore the sign in and just move to the next page
-            // definitely todo()
-            startActivity(Intent(this, ExchangeContactActivity::class.java))
         }
     }
 
@@ -56,7 +56,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun setupCustomToolbar() {
 
-        supportActionBar?.apply{
+        supportActionBar?.apply {
 
             displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
             setCustomView(R.layout.toolbar_center_title_and_back_button)
@@ -69,41 +69,70 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
-    fun signIn() {
+    private fun signIn() {
 
         clearClientSideError()
 
         // if email is valid
-        val isEmailValid = validateEmail()
+        if (!isEmailValid()) return
 
         // if password is valid
-        // if both are invalid, one will the password error will be prioritized
-        val isPassword = validatePassword()
+        if (!isPasswordValid()) return
 
-        // sign
-        if (isEmailValid && isPassword) {
-            viewModel.login(emailEdit.text.toString(), passwordEdit.text.toString())
-        }
+        // sign in
+        showAnimation()
+        viewModel
+            .login(emailEdit.text.toString(), passwordEdit.text.toString())
+            .observe(this, Observer { isLoggedIn ->
+
+                stopAnimation()
+                if (isLoggedIn) {
+
+                    startActivity(Intent(this, ExchangeContactActivity::class.java))
+                }
+            })
+
+        listenForServerErrors()
     }
 
-    private fun validateEmail(): Boolean {
+    private fun showAnimation() {
+
+        loggingAnimationDialog = ProgressDialog.show(
+            this, "",
+            "Logging in...", true
+        )
+    }
+
+    private fun stopAnimation() {
+
+        loggingAnimationDialog.cancel()
+    }
+
+    private fun isEmailValid(): Boolean {
 
         // make sure email ends with "@ampersandllc.co" aka ACCEPTED_EMAIL_DOMAIN
         val email = emailEdit.text.toString().toLowerCase()
-        var isEmailValid = email.endsWith(ACCEPTED_EMAIL_DOMAIN)
+        if (email.isEmpty()) {
 
-        if (!isEmailValid) showClientSideError("email provided is not an ampersand email: $email")
+            showClientSideError("please provide email")
+            return false
+        }
 
-        return isEmailValid
+        if (!email.endsWith(ACCEPTED_EMAIL_DOMAIN)) {
+
+            showClientSideError("email provided is not an ampersand email: $email")
+            return false
+        }
+
+        return true
     }
 
-    private fun validatePassword(): Boolean {
+    private fun isPasswordValid(): Boolean {
 
         val password = passwordEdit.text.toString()
-        var isPasswordValid = (password.length < 8) as Boolean
+        var isPasswordValid = (password.length > 5) as Boolean
 
-        if (!isPasswordValid) showClientSideError("password provided is too short")
-
+        if (isPasswordValid) showClientSideError("password provided is too short")
         return isPasswordValid
     }
 
@@ -117,7 +146,17 @@ class SignInActivity : AppCompatActivity() {
         errorText.text = ""
     }
 
+    private fun listenForServerErrors() {
+
+        viewModel.loginError.observe(this, Observer { err ->
+
+            showServerSideError(err)
+        })
+    }
+
     private fun showServerSideError(err: String) {
+
+        // maybe in the future i will want to use this "err"
 
         AlertDialog.Builder(this)
             .setTitle("Login Error")
