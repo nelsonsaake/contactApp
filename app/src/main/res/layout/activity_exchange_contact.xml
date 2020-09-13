@@ -79,7 +79,7 @@
                 android:text="Want to add a new connection?" />
 
             <Button
-                android:id="@+id/sendQRButton"
+                android:id="@+id/scanQRButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -90,6 +90,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ecMemberProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

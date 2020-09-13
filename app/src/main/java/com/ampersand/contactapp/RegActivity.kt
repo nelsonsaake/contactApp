@@ -10,8 +10,8 @@ import kotlinx.android.synthetic.main.activity_reg.*
 
 class RegActivity : AppCompatActivity() {
 
-    private val addPhotoFragment = AddPhotoFragment()
-    private val editPhotoFragment = EditPhotoFragment()
+    private val addPhotoFragment = ExchangeContactAddPhotoFragment()
+    private val editPhotoFragment = ExchangeContactEditPhotoFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

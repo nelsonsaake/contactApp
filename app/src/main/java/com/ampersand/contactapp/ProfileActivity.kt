@@ -5,16 +5,37 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 
 class ProfileActivity : AppCompatActivity() {
+
+    lateinit var viewModel : ContactApiViewModel
+    val profileLoadingFragment = ProfileLoadingFragment()
+    val  profileLoadedFragment = ProfileLoadedFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
 
+        initViewModel()
         setupCustomToolbar()
+        showLoadingFragment()
+        loadProfile()
     }
 
+    private fun initViewModel() {
+
+        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+    }
+
+    private fun loadProfile() {
+
+        viewModel.getProfile().observe(this, Observer{
+
+            showLoadedFragment()
+        })
+    }
 
     private fun setupCustomToolbar() {
 
@@ -32,4 +53,19 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoadingFragment(){
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.profileFragmentContainer, profileLoadingFragment)
+            .commit()
+    }
+
+    private fun showLoadedFragment(){
+
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.profileFragmentContainer, profileLoadedFragment)
+            .commit()
+    }
 }

@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: LogInViewModel
+    private lateinit var viewModel: ContactApiViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(LogInViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
     }
 
     private fun listenToSignInButton() {

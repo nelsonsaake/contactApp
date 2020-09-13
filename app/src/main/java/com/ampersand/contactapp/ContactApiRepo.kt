@@ -7,12 +7,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LogInRepo {
+class ContactApiRepo {
 
-     val contactApiService = ContactApiService.create()
-     val loggedInUser = MutableLiveData<LoggedInUser>()
-     val loginError = MutableLiveData<String>()
-     val regError = MutableLiveData<String>()
+    var profile = MutableLiveData<User>()
+    val contactApiService = ContactApiService.create()
+    val loggedInUser = MutableLiveData<LoggedInUser>()
+    val loginError = MutableLiveData<String>()
+    val regError = MutableLiveData<String>()
 
     val regCallback = object : Callback<RegResponse> {
 
@@ -80,7 +81,7 @@ class LogInRepo {
 
             val localisedMsg = "localised msg: ${t.localizedMessage}"
             val msg = "msg: ${t.message}"
-            Log.e( LOG_TAG,"$localisedMsg\n $msg\n")
+            Log.e(LOG_TAG, "$localisedMsg\n $msg\n")
             loginError.value = msg
         }
 

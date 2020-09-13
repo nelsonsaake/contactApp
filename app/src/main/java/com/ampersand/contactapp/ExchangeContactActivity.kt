@@ -1,8 +1,10 @@
 package com.ampersand.contactapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
+import kotlinx.android.synthetic.main.activity_exchange_contact.*
 
 class ExchangeContactActivity : AppCompatActivity() {
 
@@ -11,6 +13,24 @@ class ExchangeContactActivity : AppCompatActivity() {
         setContentView(R.layout.activity_exchange_contact)
 
         setupCustomToolbar()
+        onScanQRClicked()
+        onProfileClicked()
+    }
+
+    private fun onProfileClicked() {
+
+        ecMemberProfile.setOnClickListener {
+
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
+    }
+
+    private fun onScanQRClicked() {
+
+        scanQRButton.setOnClickListener {
+
+            startActivity(Intent(this, ScanCodeActivity::class.java))
+        }
     }
 
     private fun setupCustomToolbar(){
