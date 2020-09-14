@@ -73,6 +73,7 @@ class ContactScannerActivity : AppCompatActivity(), ResultHandler {
     fun showProfile(userCode: String) {
 
         val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(, userCode)
         startActivity(intent)
     }
 }
