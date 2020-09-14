@@ -48,14 +48,14 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
         setContentView(scannerView)
 
         scannerContainer.addView(scannerView)
-        scannerView.setResultHandler(this)
-        scannerView.startCamera()
+        scannerView?.setResultHandler(this)
+        scannerView?.startCamera()
     }
 
     public override fun onDestroy() {
 
         super.onDestroy()
-        scannerView.stopCamera()
+        scannerView?.stopCamera()
     }
 
     override fun handleResult(result: Result) {
