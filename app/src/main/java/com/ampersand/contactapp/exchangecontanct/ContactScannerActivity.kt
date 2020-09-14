@@ -11,7 +11,6 @@ import com.google.zxing.Result
 import kotlinx.android.synthetic.main.activity_contact_scanner.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
-
 class ContactScannerActivity : AppCompatActivity(), ResultHandler {
 
     private var scannerView: ZXingScannerView? = null
@@ -57,7 +56,7 @@ class ContactScannerActivity : AppCompatActivity(), ResultHandler {
         scannerView.stopCamera()
     }
 
-    override fun handleResult(result: Result) {
+    private override fun handleResult(result: Result) {
 
         val userCode = result.getText()
         Toast.makeText(getApplicationContext(), userCode, Toast.LENGTH_SHORT).show()
@@ -65,15 +64,15 @@ class ContactScannerActivity : AppCompatActivity(), ResultHandler {
         showProfile(userCode)
     }
 
-    fun saveContactInPhoneBook(userCode: String) {
+    private fun saveContactInPhoneBook(userCode: String) {
 
        viewModel.addContact(userCode)
     }
 
-    fun showProfile(userCode: String) {
+    private fun showProfile(userCode: String) {
 
         val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(, userCode)
+        intent.putExtra(USER_CODE_EXTRA, userCode)
         startActivity(intent)
     }
 }

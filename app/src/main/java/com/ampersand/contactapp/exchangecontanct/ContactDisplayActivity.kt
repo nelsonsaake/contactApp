@@ -10,6 +10,8 @@ import kotlinx.android.synthetic.main.activity_contact_display.*
 
 class ContactDisplayActivity : AppCompatActivity() {
 
+    var userCode: String?
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_display)
@@ -58,15 +60,14 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun onProfileClicked() {
 
-        /*
-         *  Want to start the same profile activity will display a scanned user
-         *
-         *
-            ecMemberProfile.setOnClickListener {
+        ecMemberProfile.setOnClickListener {
 
-                startActivity(Intent(this, ProfileActivity::class.java))
-            }
-         */
+            if(userCode == null) return
+
+            val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra(USER_CODE_EXTRA, userCode)
+            startActivity(intent)
+        }
     }
 
  }
