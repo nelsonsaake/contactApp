@@ -23,4 +23,9 @@ class RegEditPhotoFragment : Fragment() {
 
         editPhotoButton = editProfilePhotoText
     }
+
+    override fun setImage(bitmap: Bitmap){
+
+        regProfilePhoto.setImageBitmap(bitmap)
+    }
 }

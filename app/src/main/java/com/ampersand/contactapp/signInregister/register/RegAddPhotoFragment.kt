@@ -23,4 +23,5 @@ class RegAddPhotoFragment : Fragment() {
 
         addPhotoButton = addProfilePhotoText
     }
+
 }

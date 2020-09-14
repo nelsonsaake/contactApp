@@ -27,7 +27,6 @@
                 android:id="@+id/ecProfileImage"
                 android:layout_width="70dp"
                 android:layout_height="70dp"
-                android:src="@drawable/image"
                 app:civ_border_color="#00000000"
                 app:civ_border_width="2dp"
                 tools:src="@color/colorGrayLighter" />

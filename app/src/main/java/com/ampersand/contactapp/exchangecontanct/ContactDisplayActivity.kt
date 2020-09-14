@@ -6,13 +6,13 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import com.ampersand.contactapp.profile.ProfileActivity
 import com.ampersand.contactapp.R
-import kotlinx.android.synthetic.main.activity_exchange_contact.*
+import kotlinx.android.synthetic.main.activity_contact_display.*
 
-class ExchangeContactActivity : AppCompatActivity() {
+class ContactDisplayActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_exchange_contact)
+        setContentView(R.layout.activity_contact_display)
 
         setupCustomToolbar()
         onScanQRClicked()
@@ -31,7 +31,7 @@ class ExchangeContactActivity : AppCompatActivity() {
 
         scanQRButton.setOnClickListener {
 
-            startActivity(Intent(this, ScanCodeActivity::class.java))
+            startActivity(Intent(this, ContactScannerActivity::class.java))
         }
     }
 

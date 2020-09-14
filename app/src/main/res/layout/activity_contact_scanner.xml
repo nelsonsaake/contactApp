@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".exchangecontanct.ScanCodeActivity">
+    tools:context=".exchangecontanct.ContactScannerActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -46,8 +46,8 @@
         </LinearLayout>
     </LinearLayout>
 
-    <SurfaceView
-        android:id="@+id/cameraView"
+    <FrameLayout
+        android:id="@+id/scannerContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout2"

@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ACCEPTED_EMAIL_DOMAIN
 import com.ampersand.contactapp.datasource.ContactApiViewModel
-import com.ampersand.contactapp.exchangecontanct.ExchangeContactActivity
+import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 
@@ -88,7 +88,7 @@ class SignInActivity : AppCompatActivity() {
                 stopAnimation()
                 if (isLoggedIn) {
 
-                    startActivity(Intent(this, ExchangeContactActivity::class.java))
+                    startActivity(Intent(this, ContactDisplayActivity::class.java))
                 }
             })
 

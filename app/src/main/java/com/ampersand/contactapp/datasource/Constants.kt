@@ -4,3 +4,4 @@ const val LOG_TAG = "com.contactapp"
 
 const val ACCEPTED_EMAIL_DOMAIN = "@ampersandllc.co"
 
+const val PICK_IMAGE_REQUEST_CODE = "com.contactapp.pickimage"

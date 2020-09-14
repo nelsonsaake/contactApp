@@ -1,6 +1,9 @@
 package com.ampersand.contactapp.signInregister.register
 
+import android.R.attr
+import android.R.attr.bitmap
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
@@ -12,9 +15,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
-import com.ampersand.contactapp.exchangecontanct.ExchangeContactActivity
+import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 import kotlinx.android.synthetic.main.activity_reg.*
 
@@ -105,7 +107,7 @@ class RegActivity : AppCompatActivity() {
             viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
 
                 if (isRegistered) {
-                    startActivity(Intent(this, ExchangeContactActivity::class.java))
+                    startActivity(Intent(this, ContactDisplayActivity::class.java))
                 }
             })
         }
@@ -165,7 +167,40 @@ class RegActivity : AppCompatActivity() {
         val chooserIntent = Intent.createChooser(getIntent, "Select Image")
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
 
-        startActivityForResult(chooserIntent, PICK_IMAGE)
+        startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST_CODE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+
+       if(requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK){
+
+           val selectedImage: Uri = attr.data.getData()
+           val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+
+           val cursor: Cursor? = contentResolver.query(
+               selectedImage,
+               filePathColumn, null, null, null
+           )
+           cursor.moveToFirst()
+
+           val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+           val picturePath: String = cursor.getString(columnIndex)
+           cursor.close()
+
+           bitmap = BitmapFactory.decodeFile(picturePath)
+           setImage(bitmap)
+       }
+    }
+
+    private fun setImage(bitmap: Bitmap){
+
+        // display image
+        editPhotoFragment.setImage(bitmap)
+
+        // setup for upload
+        TODO()
     }
 }
 
