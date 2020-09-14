@@ -79,19 +79,30 @@ class SignInActivity : AppCompatActivity() {
         // if password is valid
         if (!isPasswordValid()) return
 
-        // sign in
-        showAnimation()
-        viewModel
-            .login(emailEdit.text.toString(), passwordEdit.text.toString())
-            .observe(this, Observer { isLoggedIn ->
+        /*
+         * naturally I will observe the register response to let user in
+         * but since the api is not working, i will just let the user in
+         *
 
-                stopAnimation()
-                if (isLoggedIn) {
+            // sign in
+            showAnimation()
+            viewModel
+                .login(emailEdit.text.toString(), passwordEdit.text.toString())
+                .observe(this, Observer { isLoggedIn ->
 
-                    startActivity(Intent(this, ContactDisplayActivity::class.java))
-                }
-            })
+                    stopAnimation()
+                    if (isLoggedIn) {
 
+                        startActivity(Intent(this, ContactDisplayActivity::class.java))
+                    }
+                })
+        */
+        startActivity(Intent(this, ContactDisplayActivity::class.java))
+
+        /*
+         * we listen for server side error or unknown error
+         * if any shows up we display in a dialog
+         */
         listenForServerErrors()
     }
 

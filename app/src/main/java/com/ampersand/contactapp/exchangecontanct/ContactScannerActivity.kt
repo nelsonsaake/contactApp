@@ -52,19 +52,57 @@ class ContactScannerActivity : AppCompatActivity(), ResultHandler {
     override fun handleResult(result: Result) {
 
         Toast.makeText(getApplicationContext(), result.getText(), Toast.LENGTH_SHORT).show()
-        saveContactInPhoneBook()
+        saveContactInPhoneBook(result.getText())
     }
 
-    override fun saveContactInPhoneBook() {
+    override fun saveContactInPhoneBook(scannedCode: String) {
 
+        /*
+         * make an api call to get the member
+         * using the scanned text as some token or id
+         *
+         * then save the result into the phone book
+         */
 
+//        addContact(
+//            firstName,
+//            lastName,
+//            modileNumber,
+//            emialID,
+//            company,
+//            jobTitle
+//        )
     }
 }
 
-//
+//--------------------------------------------------- TODO() ----------------------------
+// move section into a util file or class
+
+fun addContact(
+    firstName: String,
+    lastName: String,
+    modileNumber: String,
+    emialID: String,
+    company: String,
+    jobTitle: String
+) {
+
+    val ops = ArrayList<ContentProviderOperation>()
+    ops.add(setup())
+    ops.add(addFirstName(firstName))
+    ops.add(addLastName(lastName))
+    ops.add(addPhoneNumber(mobileNumber))
+    ops.add(addEmail(email))
+    ops.add(addCompanyAndJob(company, job))
+
+}
+
 fun setup(): ContentProviderOperation {
 
-    setup()
+    return ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
+        .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
+        .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, null)
+        .build()
 }
 
 fun addName(firstName: String, whichName: String): ContentProviderOperation {
@@ -146,23 +184,4 @@ fun addCompanyAndJob(company: String, title: String): ContentProviderOperation {
             ContactsContract.CommonDataKinds.Organization.TYPE_WORK
         )
         .build()
-}
-
-fun addContact(
-    firstName: String,
-    lastName: String,
-    modileNumber: String,
-    emialID: String,
-    company: String,
-    jobTitle: String
-) {
-
-    val ops = ArrayList<ContentProviderOperation>()
-    ops.add(setup())
-    ops.add(addFirstName(firstName))
-    ops.add(addLastName(lastName))
-    ops.add(addPhoneNumber(mobileNumber))
-    ops.add(addEmail(email))
-    ops.add(addCompanyAndJob(company, job))
-
 }

@@ -104,12 +104,20 @@ class RegActivity : AppCompatActivity() {
                 regWebsiteEdit.str(),
                 TODO()
             )
-            viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
 
-                if (isRegistered) {
-                    startActivity(Intent(this, ContactDisplayActivity::class.java))
-                }
-            })
+            /*
+             * naturally I will observe the register response to let user in
+             * but since the api is not working, i will just let the user in
+
+
+                viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
+
+                    if (isRegistered) {
+                        startActivity(Intent(this, ContactDisplayActivity::class.java))
+                    }
+                })
+            */
+            startActivity(Intent(this, ContactDisplayActivity::class.java))
         }
     }
 
