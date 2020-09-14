@@ -51,10 +51,10 @@ class ContactDisplayActivity : AppCompatActivity() {
 
         viewModel.generateQRCodeForCurrentUser().observe(this, Observer { code ->
 
-            val bm: Bitmap = encodeAsBitmap(barcode_content, BarcodeFormat.QR_CODE, 150, 150)
-            if (bm != null) {
-                qrCodeImage.setImageBitmap(bm)
-            }
+//            val bm: Bitmap = encodeAsBitmap(code, BarcodeFormat.QR_CODE, 150, 150)
+//            if (bm != null) {
+//                qrCodeImage.setImageBitmap(bm)
+//            }
             TODO()
         })
     }
