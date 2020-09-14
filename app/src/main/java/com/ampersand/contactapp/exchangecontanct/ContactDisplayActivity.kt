@@ -11,7 +11,9 @@ import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
 import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
+import com.google.zxing.BarcodeFormat
 import kotlinx.android.synthetic.main.activity_contact_display.*
+
 
 class ContactDisplayActivity : AppCompatActivity() {
 
@@ -47,16 +49,12 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun displayQRCode() {
 
-        // this is a small sample use of the QRCodeEncoder class from zxing
-        // generate a 150x150 QR code
         viewModel.generateQRCodeForCurrentUser().observe(this, Observer { code ->
 
-            /*
-                Bitmap bm = encodeAsBitmap (code, BarcodeFormat.QR_CODE, 150, 150);
-                if (bm != null) {
-                    qrCodeImage.setImageBitmap(bm);
-                }
-             */
+            val bm: Bitmap = encodeAsBitmap(barcode_content, BarcodeFormat.QR_CODE, 150, 150)
+            if (bm != null) {
+                qrCodeImage.setImageBitmap(bm)
+            }
             TODO()
         })
     }
