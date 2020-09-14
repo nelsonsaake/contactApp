@@ -1,17 +1,19 @@
 package com.ampersand.contactapp.exchangecontanct
 
-import android.content.ContentProviderOperation
 import android.content.Intent
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
+import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
+import com.ampersand.contactapp.profile.ProfileActivity
 import com.google.zxing.Result
 import kotlinx.android.synthetic.main.activity_contact_scanner.*
 import me.dm7.barcodescanner.zxing.ZXingScannerView
 
-class ContactScannerActivity : AppCompatActivity(), ResultHandler {
+class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
 
     private var scannerView: ZXingScannerView? = null
 
@@ -56,17 +58,17 @@ class ContactScannerActivity : AppCompatActivity(), ResultHandler {
         scannerView.stopCamera()
     }
 
-    private override fun handleResult(result: Result) {
+    override fun handleResult(result: Result) {
 
         val userCode = result.getText()
-        Toast.makeText(getApplicationContext(), userCode, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, userCode, Toast.LENGTH_SHORT).show()
         saveContactInPhoneBook(userCode)
         showProfile(userCode)
     }
 
     private fun saveContactInPhoneBook(userCode: String) {
 
-       viewModel.addContact(userCode)
+        viewModel.addContact(userCode)
     }
 
     private fun showProfile(userCode: String) {

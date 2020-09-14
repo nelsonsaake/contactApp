@@ -1,26 +1,39 @@
 package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
+import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
 import kotlinx.android.synthetic.main.activity_contact_display.*
 
 class ContactDisplayActivity : AppCompatActivity() {
 
-    var userCode: String?
+    var userCode: String? = null
+
+    lateinit var viewModel: ContactApiViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_contact_display)
 
+        initViewModel()
         setupCustomToolbar()
         displayQRCode()
         displayLoggedInUserProfile()
         onScanQRClicked()
         onProfileClicked()
+    }
+
+    private fun initViewModel() {
+
+        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
     }
 
     private fun setupCustomToolbar() {
@@ -38,14 +51,17 @@ class ContactDisplayActivity : AppCompatActivity() {
         // generate a 150x150 QR code
         viewModel.generateQRCodeForCurrentUser().observe(this, Observer { code ->
 
-            Bitmap bm = encodeAsBitmap (code, BarcodeFormat.QR_CODE, 150, 150);
-            if (bm != null) {
-                qrCodeImage.setImageBitmap(bm);
-            }
+            /*
+                Bitmap bm = encodeAsBitmap (code, BarcodeFormat.QR_CODE, 150, 150);
+                if (bm != null) {
+                    qrCodeImage.setImageBitmap(bm);
+                }
+             */
+            TODO()
         })
     }
 
-    private fun displayLoggedInUserProfile(){
+    private fun displayLoggedInUserProfile() {
 
         TODO()
     }
@@ -62,12 +78,13 @@ class ContactDisplayActivity : AppCompatActivity() {
 
         ecMemberProfile.setOnClickListener {
 
-            if(userCode == null) return
+            if (userCode != null) {
 
-            val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra(USER_CODE_EXTRA, userCode)
-            startActivity(intent)
+                val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra(USER_CODE_EXTRA, userCode)
+                startActivity(intent)
+            }
         }
     }
 
- }
+}

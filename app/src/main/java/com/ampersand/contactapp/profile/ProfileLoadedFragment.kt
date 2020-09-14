@@ -19,6 +19,6 @@ class ProfileLoadedFragment : Fragment() {
 
     fun displayUser(userCode: String){
 
-
+        TODO()
     }
 }

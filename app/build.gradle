@@ -51,4 +51,8 @@ dependencies {
 
     // circular avatar
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    // scanner
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+
 }

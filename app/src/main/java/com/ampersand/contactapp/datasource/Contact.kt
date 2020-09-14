@@ -8,10 +8,10 @@ class PhoneBook {
     private fun addContact(
         firstName: String,
         lastName: String,
-        modileNumber: String,
-        emialID: String,
+        mobileNumber: String,
+        email: String,
         company: String,
-        jobTitle: String
+        job: String
     ) {
 
         val ops = ArrayList<ContentProviderOperation>()
@@ -105,7 +105,7 @@ class PhoneBook {
                 ContactsContract.CommonDataKinds.Organization.TYPE,
                 ContactsContract.CommonDataKinds.Organization.TYPE_WORK
             )
-            .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, jobTitle)
+            .withValue(ContactsContract.CommonDataKinds.Organization.TITLE, title)
             .withValue(
                 ContactsContract.CommonDataKinds.Organization.TYPE,
                 ContactsContract.CommonDataKinds.Organization.TYPE_WORK

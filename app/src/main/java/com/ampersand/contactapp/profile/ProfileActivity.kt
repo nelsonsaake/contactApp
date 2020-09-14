@@ -35,10 +35,16 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun loadProfile() {
 
-        viewModel.getProfile().observe(this, Observer{
+        /*
+         *  here we get the intent extra, identifying user
+         *  decode it and display it
+         *
+            viewModel.getProfile().observe(this, Observer{
 
-            showLoadedFragment()
-        })
+                profileLoadedFragment.displayUser()
+                showLoadedFragment()
+            })
+        */
     }
 
     private fun setupCustomToolbar() {

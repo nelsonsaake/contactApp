@@ -25,4 +25,12 @@ class ContactApiViewModel : ViewModel() {
 
         return repo.register(regRequestBody)
     }
+
+    fun addContact(userCode: String) {
+        TODO("Not yet implemented")
+    }
+
+    fun generateQRCodeForCurrentUser(): LiveData<Boolean> {
+        TODO("Not yet implemented")
+    }
 }
