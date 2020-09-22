@@ -55,4 +55,12 @@ dependencies {
     // scanner
     implementation 'me.dm7.barcodescanner:zxing:1.9.13'
 
+    // file stack
+    implementation 'com.filestack:filestack-android:5.0.0-0.3.0'
+
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    // qr code generator
+    implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
 }

@@ -7,15 +7,16 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.ampersand.contactapp.datasource.ContactApiViewModel
 import com.ampersand.contactapp.R
+import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 
 class ProfileActivity : AppCompatActivity() {
 
-    lateinit var viewModel : ContactApiViewModel
+    lateinit var viewModel: ContactApiViewModel
     val profileLoadingFragment =
         ProfileLoadingFragment()
-    val  profileLoadedFragment =
+    val profileLoadedFragment =
         ProfileLoadedFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,7 @@ class ProfileActivity : AppCompatActivity() {
         initViewModel()
         setupCustomToolbar()
         showLoadingFragment()
-        loadProfile()
+        loadProfile(intent.getStringExtra(EMAIL_INTENT_EXTRA) ?: "")
     }
 
     private fun initViewModel() {
@@ -33,18 +34,16 @@ class ProfileActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
     }
 
-    private fun loadProfile() {
+    private fun loadProfile(email: String) {
 
-        /*
-         *  here we get the intent extra, identifying user
-         *  decode it and display it
-         *
-            viewModel.getProfile().observe(this, Observer{
+        if(email == "") return
 
-                profileLoadedFragment.displayUser()
-                showLoadedFragment()
-            })
-        */
+        viewModel.getProfile(email).observe(this, Observer { user ->
+
+            profileLoadedFragment.displayProfile(user)
+            showLoadedFragment()
+        })
+
     }
 
     private fun setupCustomToolbar() {
@@ -63,7 +62,7 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun showLoadingFragment(){
+    private fun showLoadingFragment() {
 
         supportFragmentManager
             .beginTransaction()
@@ -71,7 +70,7 @@ class ProfileActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun showLoadedFragment(){
+    private fun showLoadedFragment() {
 
         supportFragmentManager
             .beginTransaction()

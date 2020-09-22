@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
 import com.google.zxing.Result
@@ -68,13 +69,13 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
 
     private fun saveContactInPhoneBook(userCode: String) {
 
-        viewModel.addContact(userCode)
+        viewModel.addContact(this, userCode)
     }
 
     private fun showProfile(userCode: String) {
 
         val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(USER_CODE_EXTRA, userCode)
+        intent.putExtra(EMAIL_INTENT_EXTRA, viewModel.decode(userCode))
         startActivity(intent)
     }
 }

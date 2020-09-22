@@ -27,6 +27,12 @@ interface ContactApiService {
     @POST("/register")
     fun register(@Body regBody: RegRequestBody) : Call<RegResponse>
 
+    @Headers(
+        "Content-Type: application/json",
+        "Accept: application/json"
+    )
+    @POST("/profile")
+    fun profile(@Body reqBody: String) : Call<User>
 
     companion object{
 
@@ -34,7 +40,7 @@ interface ContactApiService {
 
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://ampersand-contact-exchange-api.herokuapp.com/api/v1/")
+                .baseUrl("https://nsaake-ampersand-contact.herokuapp.com/")
                 .build()
 
             return retrofit.create(ContactApiService::class.java)

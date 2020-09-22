@@ -1,7 +1,6 @@
 package com.ampersand.contactapp.datasource
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 
 class ContactApiViewModel : ViewModel() {
@@ -16,9 +15,20 @@ class ContactApiViewModel : ViewModel() {
         return repo.login(email, password)
     }
 
-    fun getProfile(): LiveData<User> {
+    fun encode(raw: String): String {
 
-        return repo.profile
+        TODO()
+    }
+
+    fun decode(code: String): String {
+
+        TODO()
+    }
+
+    fun getProfile(userCode: String): LiveData<User> {
+
+        val email = decode(userCode)
+        return repo.getProfile(email)
     }
 
     fun register(regRequestBody: RegRequestBody): LiveData<Boolean> {
@@ -26,11 +36,30 @@ class ContactApiViewModel : ViewModel() {
         return repo.register(regRequestBody)
     }
 
-    fun addContact(userCode: String) {
-        TODO("Not yet implemented")
+    fun addContact(lifecylcleOwner: LifecycleOwner, userCode: String) {
+
+        val email = decode(userCode)
+        repo.getProfile(email).observe(lifecylcleOwner, Observer { profile ->
+
+            PhoneBook()
+                .addContact(
+                    profile.firstName,
+                    profile.lastName,
+                    profile.phoneNumber,
+                    profile.email,
+                    profile.role
+                )
+        })
     }
 
-    fun generateQRCodeForCurrentUser(): LiveData<Boolean> {
-        TODO("Not yet implemented")
+    fun getUserCode(): String {
+
+        var email = ""
+        if(LoggedInUser.user != null){
+            email = LoggedInUser.user?.email as String
+        } else {
+            throw(Exception("User is null"))
+        }
+        return encode(email)
     }
 }

@@ -3,23 +3,27 @@ package com.ampersand.contactapp.exchangecontanct
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
+import androidmads.library.qrgenearator.QRGContents
+import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
-import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
+import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
+import com.ampersand.contactapp.datasource.LOG_TAG
+import com.ampersand.contactapp.datasource.LoggedInUser
 import com.ampersand.contactapp.profile.ProfileActivity
-import com.google.zxing.BarcodeFormat
+import com.google.zxing.WriterException
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_contact_display.*
 
 
 class ContactDisplayActivity : AppCompatActivity() {
 
-    var userCode: String? = null
-
-    lateinit var viewModel: ContactApiViewModel
+    private lateinit var viewModel: ContactApiViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,19 +53,30 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun displayQRCode() {
 
-        viewModel.generateQRCodeForCurrentUser().observe(this, Observer { code ->
-
-//            val bm: Bitmap = encodeAsBitmap(code, BarcodeFormat.QR_CODE, 150, 150)
-//            if (bm != null) {
-//                qrCodeImage.setImageBitmap(bm)
-//            }
-            TODO()
-        })
+        val code = viewModel.getUserCode()
+        var bitmap: Bitmap
+        var qrgEncoder = QRGEncoder(code, null, QRGContents.Type.TEXT, -1)
+        try {
+            bitmap = qrgEncoder.encodeAsBitmap()
+            qrCodeImage.setImageBitmap(bitmap)
+        } catch (e: WriterException) {
+            Log.v(LOG_TAG, e.toString())
+        }
     }
 
     private fun displayLoggedInUserProfile() {
 
-        TODO()
+        viewModel.getProfile(LoggedInUser.user?.email!!).observe(this, Observer { profile ->
+
+            Picasso
+                .with(this)
+                .load(profile.photo)
+                .into(ecProfileImage)
+
+            ecNameText.text = "${profile.firstName} ${profile.lastName}"
+
+            ecRoleText.text = profile.role
+        })
     }
 
     private fun onScanQRClicked() {
@@ -76,10 +91,10 @@ class ContactDisplayActivity : AppCompatActivity() {
 
         ecMemberProfile.setOnClickListener {
 
-            if (userCode != null) {
+            if (LoggedInUser.user != null) {
 
                 val intent = Intent(this, ProfileActivity::class.java)
-                intent.putExtra(USER_CODE_EXTRA, userCode)
+                intent.putExtra(EMAIL_INTENT_EXTRA, LoggedInUser.user?.email)
                 startActivity(intent)
             }
         }

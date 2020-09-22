@@ -5,12 +5,11 @@ import android.provider.ContactsContract
 
 class PhoneBook {
 
-    private fun addContact(
+    fun addContact(
         firstName: String,
         lastName: String,
         mobileNumber: String,
         email: String,
-        company: String,
         job: String
     ) {
 
@@ -20,11 +19,11 @@ class PhoneBook {
         ops.add(addLastName(lastName))
         ops.add(addPhoneNumber(mobileNumber))
         ops.add(addEmail(email))
-        ops.add(addCompanyAndJob(company, job))
+        ops.add(addCompanyAndJob("company", job))
 
     }
 
-    fun setup(): ContentProviderOperation {
+    private fun setup(): ContentProviderOperation {
 
         return ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
             .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, null)
@@ -32,7 +31,7 @@ class PhoneBook {
             .build()
     }
 
-    fun addName(firstName: String, whichName: String): ContentProviderOperation {
+    private fun addName(firstName: String, whichName: String): ContentProviderOperation {
 
         return ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
             .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -44,7 +43,7 @@ class PhoneBook {
             .build()
     }
 
-    fun addFirstName(firstName: String): ContentProviderOperation {
+    private fun addFirstName(firstName: String): ContentProviderOperation {
 
         return addName(
             ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
@@ -52,7 +51,7 @@ class PhoneBook {
         )
     }
 
-    fun addLastName(lastName: String): ContentProviderOperation {
+    private fun addLastName(lastName: String): ContentProviderOperation {
 
         return addName(
             ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
@@ -60,7 +59,7 @@ class PhoneBook {
         )
     }
 
-    fun addPhoneNumber(mobileNumber: String): ContentProviderOperation {
+    private fun addPhoneNumber(mobileNumber: String): ContentProviderOperation {
 
         return ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
             .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -76,7 +75,7 @@ class PhoneBook {
             .build()
     }
 
-    fun addEmail(email: String): ContentProviderOperation {
+    private fun addEmail(email: String): ContentProviderOperation {
 
         return ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
             .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -92,7 +91,7 @@ class PhoneBook {
             .build()
     }
 
-    fun addCompanyAndJob(company: String, title: String): ContentProviderOperation {
+    private fun addCompanyAndJob(company: String, title: String): ContentProviderOperation {
 
         return ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
             .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)

@@ -5,11 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import com.ampersand.contactapp.R
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_reg_page_edit_photo.*
 
 class RegEditPhotoFragment : Fragment() {
 
-    lateinit var editPhotoButton
+    lateinit var editPhotoButton: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,8 +28,11 @@ class RegEditPhotoFragment : Fragment() {
         editPhotoButton = editProfilePhotoText
     }
 
-    override fun setImage(bitmap: Bitmap){
+    fun setImage(url: String){
 
-        regProfilePhoto.setImageBitmap(bitmap)
+        Picasso
+            .with(context)
+            .load(url)
+            .into(regProfilePhoto)
     }
 }

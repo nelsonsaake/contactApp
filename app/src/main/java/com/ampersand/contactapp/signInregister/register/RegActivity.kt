@@ -1,11 +1,10 @@
 package com.ampersand.contactapp.signInregister.register
 
-import android.R.attr
-import android.R.attr.bitmap
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
+import android.content.IntentFilter
 import android.os.Bundle
-import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
 import android.widget.ImageView
@@ -15,9 +14,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
+import com.filestack.Config
+import com.filestack.FileLink
+import com.filestack.android.FsActivity
+import com.filestack.android.FsConstants
 import kotlinx.android.synthetic.main.activity_reg.*
 
 
@@ -28,6 +34,8 @@ class RegActivity : AppCompatActivity() {
     private val editPhotoFragment =
         RegEditPhotoFragment()
     private lateinit var viewModel: ContactApiViewModel
+    private var uploadReceiver: UploadReceiver? = null
+    var fileLink: FileLink? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +47,7 @@ class RegActivity : AppCompatActivity() {
         showAddPhotoFragment()
         onRegisterButtonClicked()
         onPhotoButtonsClicked()
+        setupFileStack()
     }
 
     private fun initViewModel() {
@@ -88,42 +97,42 @@ class RegActivity : AppCompatActivity() {
 
     private fun onRegisterButtonClicked() {
 
-        regButton.setOnClickListener{
+        regButton.setOnClickListener {
 
             listenForServerErrors()
+
+            var photo = ""
+            photo = fileLink!!.handle
 
             val regRequestBody = RegRequestBody(
                 regEmailEdit.str(),
                 regPasswordEdit.str(),
                 regFirstNameEdit.str(),
                 regLastNameEdit.str(),
+                photo,
                 regRoleEdit.str(),
                 regPhoneEdit.str(),
                 regTwitterEdit.str(),
                 regLinkedInEdit.str(),
-                regWebsiteEdit.str(),
-                TODO()
+                regWebsiteEdit.str()
             )
 
             /*
              * naturally I will observe the register response to let user in
              * but since the api is not working, i will just let the user in
-
-
-                viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
-
-                    if (isRegistered) {
-                        startActivity(Intent(this, ContactDisplayActivity::class.java))
-                    }
-                })
             */
-            startActivity(Intent(this, ContactDisplayActivity::class.java))
+            viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
+
+                if (isRegistered) {
+                    startActivity(Intent(this, ContactDisplayActivity::class.java))
+                }
+            })
         }
     }
 
     private fun listenForServerErrors() {
 
-        viewModel.regError.observe(this, Observer{ err ->
+        viewModel.regError.observe(this, Observer { err ->
 
             showServerSideError(err)
         })
@@ -139,76 +148,84 @@ class RegActivity : AppCompatActivity() {
             .show()
     }
 
-    private fun onPhotoButtonsClicked(){
+    private fun onPhotoButtonsClicked() {
 
         onAddPhotoButtonClicked()
         onEditPhotoButtonClicked()
     }
 
-    private fun onAddPhotoButtonClicked(){
+    private fun onAddPhotoButtonClicked() {
 
-        addPhotoFragment.addPhotoButton.setOnClickListener{
+        addPhotoFragment.addPhotoButton.setOnClickListener {
+
+            selectPhoto()
+            showEditPhotoFragment()
+        }
+    }
+
+    private fun onEditPhotoButtonClicked() {
+
+        editPhotoFragment.editPhotoButton.setOnClickListener {
 
             selectPhoto()
         }
     }
 
-    private fun onEditPhotoButtonClicked(){
+    private fun selectPhoto() {
 
-        editPhotoFragment.editPhotoButton.setOnClickListener{
-
-            selectPhoto()
-        }
-    }
-
-    private fun selectPhoto(){
-
-        val getIntent = Intent(Intent.ACTION_GET_CONTENT)
-        getIntent.type = "image/*"
-
-        val pickIntent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        )
-        pickIntent.type = "image/*"
-
-        val chooserIntent = Intent.createChooser(getIntent, "Select Image")
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
-
-        startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST_CODE)
+        val apiKey = getString(R.string.file_stack_api_key)
+        val config = Config(apiKey, "https://form.samples.android.filestack.com")
+        val pickerIntent = Intent(this, FsActivity::class.java)
+        pickerIntent.putExtra(FsConstants.EXTRA_CONFIG, config)
+        val mimeTypes = arrayOf("image/*")
+        pickerIntent.putExtra(FsConstants.EXTRA_MIME_TYPES, mimeTypes)
+        startActivity(pickerIntent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
         super.onActivityResult(requestCode, resultCode, data)
 
-       if(requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK){
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
 
-           val selectedImage: Uri = attr.data.getData()
-           val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
 
-           val cursor: Cursor? = contentResolver.query(
-               selectedImage,
-               filePathColumn, null, null, null
-           )
-           cursor.moveToFirst()
-
-           val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-           val picturePath: String = cursor.getString(columnIndex)
-           cursor.close()
-
-           bitmap = BitmapFactory.decodeFile(picturePath)
-           setImage(bitmap)
-       }
+        }
     }
 
-    private fun setImage(bitmap: Bitmap){
+    private fun setImage(url: String) {
 
         // display image
-        editPhotoFragment.setImage(bitmap)
+        editPhotoFragment.setImage(url)
+    }
 
-        // setup for upload
-        TODO()
+    inner class UploadReceiver : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent) {
+
+            fileLink = intent.getSerializableExtra(FsConstants.EXTRA_FILE_LINK) as FileLink
+        }
+    }
+
+    fun setupFileStack() {
+
+        // Register the receiver for upload broadcasts
+        val filter = IntentFilter(FsConstants.BROADCAST_UPLOAD)
+        uploadReceiver = UploadReceiver()
+        LocalBroadcastManager.getInstance(this).registerReceiver(uploadReceiver!!, filter)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // Unregister the receiver to avoid leaking it outside tne activity context
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(uploadReceiver!!)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        if (fileLink != null) {
+            val url: String = fileLink!!.getHandle()
+            setImage(url)
+        }
     }
 }
 

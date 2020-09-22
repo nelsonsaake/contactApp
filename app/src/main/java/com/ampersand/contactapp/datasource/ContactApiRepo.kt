@@ -16,9 +16,7 @@ import retrofit2.Response
 
 class ContactApiRepo {
 
-    var profile = MutableLiveData<User>()
     val contactApiService = ContactApiService.create()
-    val loggedInUser = MutableLiveData<LoggedInUser>()
     val loginError = MutableLiveData<String>()
     val regError = MutableLiveData<String>()
     val isLoginSuccessful = MutableLiveData<Boolean>()
@@ -32,72 +30,88 @@ class ContactApiRepo {
         isReggeredSuccessful.value = false
     }
 
-    val regCallback = object : Callback<RegResponse> {
-
-        override fun onFailure(call: Call<RegResponse>, t: Throwable) {
-            Log.e(
-                LOG_TAG,
-                "msg: ${t.localizedMessage}; \n localised msg: ${t.message}\n"
-            )
-        }
-
-        override fun onResponse(
-            call: Call<RegResponse>,
-            response: Response<RegResponse>
-        ) {
-
-            val regResponse = response.body()
-            val status = regResponse?.status
-
-            val gson = Gson()
-            if (status == "201") {
-
-                val json = gson.toJson(regResponse.response)
-                val reg201Res = gson.fromJson(json, Reg201Response::class.java)
-                loggedInUser.value = reg201Res as LoggedInUser
-            } else {
-
-                val json = gson.toJson(regResponse?.response)
-                val regErr = gson.fromJson(json, RegErrResponse::class.java)
-                val err = "error registering user; msg: ${regErr.error}\n"
-                Log.e(LOG_TAG, err)
-                regError.value = err
-            }
-        }
+    fun onApiCallFailure(t: Throwable){
+        Log.e(
+            LOG_TAG,
+            "msg: ${t.localizedMessage}; \n localised msg: ${t.message}\n"
+        )
     }
 
     fun register(regRequestBody: RegRequestBody): LiveData<Boolean> {
 
+        val regCallback = object : Callback<RegResponse> {
+
+            override fun onFailure(call: Call<RegResponse>, t: Throwable) = onApiCallFailure(t)
+
+            override fun onResponse(
+                call: Call<RegResponse>,
+                response: Response<RegResponse>
+            ) {
+
+                val regResponse = response.body()
+                val status = regResponse?.status
+
+                val gson = Gson()
+                if (status == "201") {
+
+                    val json = gson.toJson(regResponse.response)
+                    val reg201Res = gson.fromJson(json, Reg201Response::class.java)
+                    LoggedInUser.token = reg201Res.token
+                    LoggedInUser.user = reg201Res.user
+                } else {
+
+                    val json = gson.toJson(regResponse?.response)
+                    val regErr = gson.fromJson(json, RegErrResponse::class.java)
+                    val err = "error registering user; msg: ${regErr.error}\n"
+                    Log.e(LOG_TAG, err)
+                    regError.value = err
+                }
+            }
+        }
         contactApiService.register(regRequestBody).enqueue(regCallback)
         return isReggeredSuccessful
     }
 
-    val loginCallback = object : Callback<LogInResponse> {
-
-        override fun onFailure(call: Call<LogInResponse>, t: Throwable) {
-
-            val localisedMsg = "localised msg: ${t.localizedMessage}"
-            val msg = "msg: ${t.message}"
-            Log.e(LOG_TAG, "$localisedMsg\n $msg\n")
-            loginError.value = msg
-        }
-
-        override fun onResponse(
-            call: Call<LogInResponse>,
-            response: Response<LogInResponse>
-        ) {
-
-            loggedInUser.value = response.body() as LoggedInUser
-            isLoginSuccessful.value = true
-        }
-    }
-
     fun login(email: String, password: String): LiveData<Boolean> {
 
+        val loginCallback = object : Callback<LogInResponse> {
+
+            override fun onFailure(call: Call<LogInResponse>, t: Throwable) {
+
+                val localisedMsg = "localised msg: ${t.localizedMessage}"
+                val msg = "msg: ${t.message}"
+                Log.e(LOG_TAG, "$localisedMsg\n $msg\n")
+                loginError.value = msg
+            }
+
+            override fun onResponse(
+                call: Call<LogInResponse>,
+                response: Response<LogInResponse>
+            ) {
+
+                LoggedInUser.token = response.body()?.token
+                LoggedInUser.user = response.body()?.user
+                isLoginSuccessful.value = true
+            }
+        }
         val loginRequestBody = LogInRequestBody(email, password)
         contactApiService.login(loginRequestBody).enqueue(loginCallback)
-
         return isLoginSuccessful
     }
 
+    fun getProfile(email: String): LiveData<User>{
+
+        var profile = MutableLiveData<User>()
+
+        contactApiService.profile(email).enqueue(object : Callback<User> {
+
+            override fun onFailure(call: Call<User>, t: Throwable)  = onApiCallFailure(t)
+
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+
+                profile.value = response.body()
+            }
+        })
+        return profile
+    }
 }

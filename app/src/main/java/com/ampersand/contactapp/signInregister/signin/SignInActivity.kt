@@ -82,23 +82,20 @@ class SignInActivity : AppCompatActivity() {
         /*
          * naturally I will observe the register response to let user in
          * but since the api is not working, i will just let the user in
-         *
-
-            // sign in
-            showAnimation()
-            viewModel
-                .login(emailEdit.text.toString(), passwordEdit.text.toString())
-                .observe(this, Observer { isLoggedIn ->
-
-                    stopAnimation()
-                    if (isLoggedIn) {
-
-                        startActivity(Intent(this, ContactDisplayActivity::class.java))
-                    }
-                })
         */
-        startActivity(Intent(this, ContactDisplayActivity::class.java))
 
+        // sign in
+        showAnimation()
+        viewModel
+            .login(emailEdit.text.toString(), passwordEdit.text.toString())
+            .observe(this, Observer { isLoggedIn ->
+
+                stopAnimation()
+                if (isLoggedIn) {
+
+                    startActivity(Intent(this, ContactDisplayActivity::class.java))
+                }
+            })
         /*
          * we listen for server side error or unknown error
          * if any shows up we display in a dialog
@@ -108,7 +105,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun showAnimation() {
 
-        loggingAnimationDialog = ProgressDialog.show(
+        loggingInAnimationDialog = ProgressDialog.show(
             this, "",
             "Logging in...", true
         )
@@ -116,7 +113,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun stopAnimation() {
 
-        loggingAnimationDialog.cancel()
+        loggingInAnimationDialog.cancel()
     }
 
     private fun isEmailValid(): Boolean {
