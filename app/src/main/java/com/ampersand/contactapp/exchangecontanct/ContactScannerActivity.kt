@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
-import com.ampersand.contactapp.datasource.USER_CODE_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
 import com.google.zxing.Result
 import kotlinx.android.synthetic.main.activity_contact_scanner.*
@@ -61,7 +60,7 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
 
     override fun handleResult(result: Result) {
 
-        val userCode = result.getText()
+        val userCode = result.text
         Toast.makeText(this, userCode, Toast.LENGTH_SHORT).show()
         saveContactInPhoneBook(userCode)
         showProfile(userCode)

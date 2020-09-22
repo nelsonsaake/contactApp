@@ -79,11 +79,6 @@ class SignInActivity : AppCompatActivity() {
         // if password is valid
         if (!isPasswordValid()) return
 
-        /*
-         * naturally I will observe the register response to let user in
-         * but since the api is not working, i will just let the user in
-        */
-
         // sign in
         showAnimation()
         viewModel
@@ -118,7 +113,6 @@ class SignInActivity : AppCompatActivity() {
 
     private fun isEmailValid(): Boolean {
 
-        // make sure email ends with "@ampersandllc.co" aka ACCEPTED_EMAIL_DOMAIN
         val email = emailEdit.text.toString().toLowerCase()
         if (email.isEmpty()) {
 
@@ -126,9 +120,9 @@ class SignInActivity : AppCompatActivity() {
             return false
         }
 
-        if (!email.endsWith(ACCEPTED_EMAIL_DOMAIN)) {
+        if (!(email.endsWith("@ampersandllc.co") or email.endsWith("@gmail.com"))) {
 
-            showClientSideError("email provided is not an ampersand email: $email")
+            showClientSideError("email provided is not accepted email: $email")
             return false
         }
 

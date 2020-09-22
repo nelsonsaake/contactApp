@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".profile.ProfileLoadingFragment">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -70,7 +69,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/profileTwitter"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/shp_gray_oval"
@@ -79,13 +78,13 @@
                     tools:srcCompat="@drawable/shp_gray_oval" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/profileLinkedIn"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:src="@drawable/shp_gray_oval"
-                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintStart_toEndOf="@+id/profileTwitter"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@drawable/shp_gray_oval" />
             </androidx.constraintlayout.widget.ConstraintLayout>

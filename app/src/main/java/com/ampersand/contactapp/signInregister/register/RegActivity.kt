@@ -17,13 +17,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
-import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
-import com.filestack.Config
-import com.filestack.FileLink
-import com.filestack.android.FsActivity
-import com.filestack.android.FsConstants
 import kotlinx.android.synthetic.main.activity_reg.*
 
 
@@ -34,8 +29,6 @@ class RegActivity : AppCompatActivity() {
     private val editPhotoFragment =
         RegEditPhotoFragment()
     private lateinit var viewModel: ContactApiViewModel
-    private var uploadReceiver: UploadReceiver? = null
-    var fileLink: FileLink? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +40,6 @@ class RegActivity : AppCompatActivity() {
         showAddPhotoFragment()
         onRegisterButtonClicked()
         onPhotoButtonsClicked()
-        setupFileStack()
     }
 
     private fun initViewModel() {
@@ -101,15 +93,12 @@ class RegActivity : AppCompatActivity() {
 
             listenForServerErrors()
 
-            var photo = ""
-            photo = fileLink!!.handle
-
             val regRequestBody = RegRequestBody(
                 regEmailEdit.str(),
                 regPasswordEdit.str(),
                 regFirstNameEdit.str(),
                 regLastNameEdit.str(),
-                photo,
+                TODO(),
                 regRoleEdit.str(),
                 regPhoneEdit.str(),
                 regTwitterEdit.str(),
@@ -144,7 +133,6 @@ class RegActivity : AppCompatActivity() {
             .setTitle("Register Error")
             .setMessage(err)
             .setPositiveButton("Ok", null)
-            /*.setIcon()*/
             .show()
     }
 
@@ -173,59 +161,13 @@ class RegActivity : AppCompatActivity() {
 
     private fun selectPhoto() {
 
-        val apiKey = getString(R.string.file_stack_api_key)
-        val config = Config(apiKey, "https://form.samples.android.filestack.com")
-        val pickerIntent = Intent(this, FsActivity::class.java)
-        pickerIntent.putExtra(FsConstants.EXTRA_CONFIG, config)
-        val mimeTypes = arrayOf("image/*")
-        pickerIntent.putExtra(FsConstants.EXTRA_MIME_TYPES, mimeTypes)
-        startActivity(pickerIntent)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK) {
-
-
-        }
     }
 
     private fun setImage(url: String) {
 
         // display image
         editPhotoFragment.setImage(url)
-    }
-
-    inner class UploadReceiver : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent) {
-
-            fileLink = intent.getSerializableExtra(FsConstants.EXTRA_FILE_LINK) as FileLink
-        }
-    }
-
-    fun setupFileStack() {
-
-        // Register the receiver for upload broadcasts
-        val filter = IntentFilter(FsConstants.BROADCAST_UPLOAD)
-        uploadReceiver = UploadReceiver()
-        LocalBroadcastManager.getInstance(this).registerReceiver(uploadReceiver!!, filter)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        // Unregister the receiver to avoid leaking it outside tne activity context
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(uploadReceiver!!)
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        if (fileLink != null) {
-            val url: String = fileLink!!.getHandle()
-            setImage(url)
-        }
     }
 }
 

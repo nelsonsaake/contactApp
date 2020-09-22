@@ -23,7 +23,6 @@ class ProfileLoadedFragment : Fragment() {
 
     fun displayProfile(profile: User){
 
-
         Picasso
             .with(context)
             .load(profile.photo)
@@ -33,6 +32,9 @@ class ProfileLoadedFragment : Fragment() {
 
         profileRoleText.text = profile.role
 
-        TODO("finish setting values for the rest of the widgets")
+        profilePhoneText.text = profile.phoneNumber
+
+        profileMailText.text = profile.email
+
     }
 }

@@ -1,7 +1,6 @@
 package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import androidmads.library.qrgenearator.QRGContents
@@ -53,11 +52,10 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun displayQRCode() {
 
-        val code = viewModel.getUserCode()
-        var bitmap: Bitmap
+        val code = viewModel.userCode()
         var qrgEncoder = QRGEncoder(code, null, QRGContents.Type.TEXT, -1)
         try {
-            bitmap = qrgEncoder.encodeAsBitmap()
+            var bitmap = qrgEncoder.encodeAsBitmap()
             qrCodeImage.setImageBitmap(bitmap)
         } catch (e: WriterException) {
             Log.v(LOG_TAG, e.toString())

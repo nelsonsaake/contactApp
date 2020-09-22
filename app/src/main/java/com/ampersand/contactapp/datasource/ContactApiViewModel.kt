@@ -52,7 +52,7 @@ class ContactApiViewModel : ViewModel() {
         })
     }
 
-    fun getUserCode(): String {
+    fun userCode(): String {
 
         var email = ""
         if(LoggedInUser.user != null){
