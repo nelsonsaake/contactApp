@@ -28,7 +28,7 @@ class RegEditPhotoFragment : Fragment() {
         editPhotoButton = editProfilePhotoText
     }
 
-    fun setImage(url: String){
+    fun setPhoto(url: String){
 
         Picasso
             .with(context)

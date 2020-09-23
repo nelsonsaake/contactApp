@@ -1,10 +1,8 @@
 package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
-import androidmads.library.qrgenearator.QRGContents
-import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,10 +10,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
-import com.ampersand.contactapp.datasource.LOG_TAG
 import com.ampersand.contactapp.datasource.LoggedInUser
 import com.ampersand.contactapp.profile.ProfileActivity
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
+import com.google.zxing.common.BitMatrix
+import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_contact_display.*
 
@@ -52,13 +53,15 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun displayQRCode() {
 
-        val code = viewModel.userCode()
-        var qrgEncoder = QRGEncoder(code, null, QRGContents.Type.TEXT, -1)
+        val text: String = viewModel.userCode()
+        val multiFormatWriter = MultiFormatWriter()
         try {
-            var bitmap = qrgEncoder.encodeAsBitmap()
+            val bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200)
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
             qrCodeImage.setImageBitmap(bitmap)
         } catch (e: WriterException) {
-            Log.v(LOG_TAG, e.toString())
+            e.printStackTrace()
         }
     }
 

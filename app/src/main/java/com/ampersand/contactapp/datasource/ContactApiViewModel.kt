@@ -17,12 +17,14 @@ class ContactApiViewModel : ViewModel() {
 
     fun encode(raw: String): String {
 
-        TODO()
+        // TODO()
+        return raw
     }
 
     fun decode(code: String): String {
 
-        TODO()
+        // TODO()
+        return code
     }
 
     fun getProfile(userCode: String): LiveData<User> {

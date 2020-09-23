@@ -11,7 +11,11 @@ import kotlinx.android.synthetic.main.fragment_reg_page_add_photo.*
 
 class RegAddPhotoFragment : Fragment() {
 
-    lateinit var addPhotoButton: TextView
+    var addPhotoButton: TextView
+
+    init{
+        addPhotoButton = addProfilePhotoText
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -19,11 +23,4 @@ class RegAddPhotoFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_reg_page_add_photo, container, false)
     }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        addPhotoButton = addProfilePhotoText
-    }
-
 }

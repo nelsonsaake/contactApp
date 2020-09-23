@@ -1,10 +1,10 @@
 package com.ampersand.contactapp.signInregister.register
 
-import android.content.BroadcastReceiver
-import android.content.Context
+import android.app.Activity
 import android.content.Intent
-import android.content.IntentFilter
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
 import android.widget.EditText
 import android.widget.ImageView
@@ -14,9 +14,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 import kotlinx.android.synthetic.main.activity_reg.*
@@ -24,11 +24,10 @@ import kotlinx.android.synthetic.main.activity_reg.*
 
 class RegActivity : AppCompatActivity() {
 
-    private val addPhotoFragment =
-        RegAddPhotoFragment()
-    private val editPhotoFragment =
-        RegEditPhotoFragment()
+    private val addPhotoFragment = RegAddPhotoFragment()
+    private val editPhotoFragment = RegEditPhotoFragment()
     private lateinit var viewModel: ContactApiViewModel
+    private var regPhotoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +62,7 @@ class RegActivity : AppCompatActivity() {
             setCustomView(R.layout.toolbar_center_title_and_back_button)
             customView.apply {
 
-                findViewById<TextView>(R.id.customToolbarTitleText).text = "Register"
+                findViewById<TextView>(R.id.customToolbarTitleText).text = context.getString(R.string.register_page_title)
                 findViewById<ImageView>(R.id.backButton).setOnClickListener {
                     finish()
                 }
@@ -98,7 +97,7 @@ class RegActivity : AppCompatActivity() {
                 regPasswordEdit.str(),
                 regFirstNameEdit.str(),
                 regLastNameEdit.str(),
-                TODO(),
+                photoToString(),
                 regRoleEdit.str(),
                 regPhoneEdit.str(),
                 regTwitterEdit.str(),
@@ -160,14 +159,46 @@ class RegActivity : AppCompatActivity() {
     }
 
     private fun selectPhoto() {
+        val getIntent = Intent(Intent.ACTION_GET_CONTENT)
+        getIntent.type = "image/*"
 
+        val pickIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        )
+        pickIntent.type = "image/*"
 
+        val chooserIntent = Intent.createChooser(getIntent, "Select Image")
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(pickIntent))
+
+        startActivityForResult(chooserIntent, PICK_IMAGE_REQUEST_CODE)
     }
 
-    private fun setImage(url: String) {
+    private fun displayPhoto(url: String) {
 
         // display image
-        editPhotoFragment.setImage(url)
+        editPhotoFragment.setPhoto(url)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_IMAGE_REQUEST_CODE) {
+                regPhotoUri = data?.data
+                displayPhoto(regPhotoUri.toString())
+            }
+        }
+    }
+
+    fun photoToString(): String{
+
+        if(regPhotoUri == null){
+            return ""
+        }
+        val inputStream = contentResolver.openInputStream(regPhotoUri!!)
+        val bytes: ByteArray  = inputStream?.readBytes()!!
+        inputStream.close()
+        return String(bytes)
     }
 }
 
@@ -175,3 +206,4 @@ private fun EditText.str(): String {
 
     return this.text.toString()
 }
+
