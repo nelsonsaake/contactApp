@@ -11,9 +11,7 @@ import com.ampersand.contactapp.R
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_reg_page_edit_photo.*
 
-class RegEditPhotoFragment : Fragment() {
-
-    lateinit var editPhotoButton: TextView
+class RegEditPhotoFragment(val onClickListener: View.OnClickListener) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +23,7 @@ class RegEditPhotoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editPhotoButton = editProfilePhotoText
+        editProfilePhotoText.setOnClickListener(onClickListener)
     }
 
     fun setPhoto(url: String){

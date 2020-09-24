@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -20,12 +21,14 @@ import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 import kotlinx.android.synthetic.main.activity_reg.*
+import kotlinx.android.synthetic.main.fragment_reg_page_add_photo.*
+import kotlinx.android.synthetic.main.fragment_reg_page_edit_photo.*
 
 
-class RegActivity : AppCompatActivity() {
+class RegActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val addPhotoFragment = RegAddPhotoFragment()
-    private val editPhotoFragment = RegEditPhotoFragment()
+    private val addPhotoFragment = RegAddPhotoFragment(this)
+    private val editPhotoFragment = RegEditPhotoFragment(this)
     private lateinit var viewModel: ContactApiViewModel
     private var regPhotoUri: Uri? = null
 
@@ -37,8 +40,7 @@ class RegActivity : AppCompatActivity() {
         setupCustomToolbar()
         maskPassword()
         showAddPhotoFragment()
-        onRegisterButtonClicked()
-        onPhotoButtonsClicked()
+        regButton.setOnClickListener(this)
     }
 
     private fun initViewModel() {
@@ -86,36 +88,29 @@ class RegActivity : AppCompatActivity() {
             .commitNow()
     }
 
-    private fun onRegisterButtonClicked() {
+    private fun register() {
 
-        regButton.setOnClickListener {
+        listenForServerErrors()
 
-            listenForServerErrors()
+        val regRequestBody = RegRequestBody(
+            regEmailEdit.str(),
+            regPasswordEdit.str(),
+            regFirstNameEdit.str(),
+            regLastNameEdit.str(),
+            photoToString(),
+            regRoleEdit.str(),
+            regPhoneEdit.str(),
+            regTwitterEdit.str(),
+            regLinkedInEdit.str(),
+            regWebsiteEdit.str()
+        )
 
-            val regRequestBody = RegRequestBody(
-                regEmailEdit.str(),
-                regPasswordEdit.str(),
-                regFirstNameEdit.str(),
-                regLastNameEdit.str(),
-                photoToString(),
-                regRoleEdit.str(),
-                regPhoneEdit.str(),
-                regTwitterEdit.str(),
-                regLinkedInEdit.str(),
-                regWebsiteEdit.str()
-            )
+        viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
 
-            /*
-             * naturally I will observe the register response to let user in
-             * but since the api is not working, i will just let the user in
-            */
-            viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
-
-                if (isRegistered) {
-                    startActivity(Intent(this, ContactDisplayActivity::class.java))
-                }
-            })
-        }
+            if (isRegistered) {
+                startActivity(Intent(this, ContactDisplayActivity::class.java))
+            }
+        })
     }
 
     private fun listenForServerErrors() {
@@ -133,29 +128,6 @@ class RegActivity : AppCompatActivity() {
             .setMessage(err)
             .setPositiveButton("Ok", null)
             .show()
-    }
-
-    private fun onPhotoButtonsClicked() {
-
-        onAddPhotoButtonClicked()
-        onEditPhotoButtonClicked()
-    }
-
-    private fun onAddPhotoButtonClicked() {
-
-        addPhotoFragment.addPhotoButton.setOnClickListener {
-
-            selectPhoto()
-            showEditPhotoFragment()
-        }
-    }
-
-    private fun onEditPhotoButtonClicked() {
-
-        editPhotoFragment.editPhotoButton.setOnClickListener {
-
-            selectPhoto()
-        }
     }
 
     private fun selectPhoto() {
@@ -199,6 +171,22 @@ class RegActivity : AppCompatActivity() {
         val bytes: ByteArray  = inputStream?.readBytes()!!
         inputStream.close()
         return String(bytes)
+    }
+
+    override fun onClick(v: View?) {
+
+        when(v){
+            addProfilePhotoText -> {
+                selectPhoto()
+                showEditPhotoFragment()
+            }
+            editProfilePhotoText -> {
+                selectPhoto()
+            }
+            regButton -> {
+                register()
+            }
+        }
     }
 }
 
