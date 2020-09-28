@@ -2,6 +2,7 @@ package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -47,7 +48,7 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
         scannerView = ZXingScannerView(this)
         setContentView(scannerView)
 
-        val scannerContainer = findViewById(R.id.scannerContainer)
+        val scannerContainer = findViewById<FrameLayout>(R.id.scannerContainer)
         scannerContainer.addView(scannerView)
         scannerView?.setResultHandler(this)
         scannerView?.startCamera()
