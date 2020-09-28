@@ -10,6 +10,8 @@ import com.ampersand.contactapp.signInregister.register.model.RegResponse
 import com.ampersand.contactapp.signInregister.signin.model.LogInRequestBody
 import com.ampersand.contactapp.signInregister.signin.model.LogInResponse
 import com.google.gson.Gson
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -162,7 +164,7 @@ class ContactRepo {
         return roles.random()
     }
 
-    fun fakerUser(): User {
+    private fun fakerUser(): User {
 
         val firstName = fakerName()
         val lastName = fakerName()
@@ -211,7 +213,10 @@ class ContactRepo {
 
     private fun fakerAddUser(user: User) {
 
-        fakerUsers.put(user.email, user)
+        if(fakerUsers == null) {
+            fakerUsers = mutableMapOf<String, User>()
+        }
+        fakerUsers[user.email] = user
     }
 
     private fun fakerFactory() {
@@ -219,6 +224,13 @@ class ContactRepo {
         for (i in 1..3) {
             fakerAddUser(fakerUser())
         }
+    }
+
+    fun fakerRandomUser() : User {
+
+        val user = fakerUser()
+        fakerAddUser(user)
+        return user
     }
 
     fun fakerRegister(requestBody: RegRequestBody): LiveData<Boolean> {
@@ -236,8 +248,14 @@ class ContactRepo {
 
         LoggedInUser.user = fakerUserWithEmailAndPassword(email, password)
         LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
+
         val isSuccess = MutableLiveData<Boolean>()
+
+//        runBlocking {
+//            delay(2000L)
+//        }
         isSuccess.value = true
+
         return isSuccess
     }
 

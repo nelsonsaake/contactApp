@@ -47,6 +47,7 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
         scannerView = ZXingScannerView(this)
         setContentView(scannerView)
 
+        val scannerContainer = findViewById(R.id.scannerContainer)
         scannerContainer.addView(scannerView)
         scannerView?.setResultHandler(this)
         scannerView?.startCamera()

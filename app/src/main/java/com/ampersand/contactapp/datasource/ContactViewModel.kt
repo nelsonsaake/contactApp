@@ -21,7 +21,7 @@ class ContactViewModel : ViewModel() {
         // decode is called to decrypt the scanned code to a user email
         // api provided to support the app is not available so
         // we fake a decode
-        return repo.fakerUser().email
+        return repo.fakerRandomUser().email
     }
 
     fun login(email: String, password: String): LiveData<Boolean> {
