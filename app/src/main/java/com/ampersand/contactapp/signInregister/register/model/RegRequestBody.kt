@@ -11,4 +11,34 @@ data class RegRequestBody(
     val twitter: String,
     val linkedIn: String,
     val website: String
-)
+){
+    fun isValid() : Boolean {
+
+        if(!isEmailValid()) return false;
+
+        if(!isPasswordValid()) return false;
+
+        if(firstName.isNullOrEmpty()) return false;
+
+        if(lastName.isNullOrEmpty()) return false;
+
+        if(phoneNumber.isNullOrEmpty()) return false;
+
+        return true
+    }
+
+    fun isEmailValid(): Boolean {
+
+        val acceptableDomains = arrayOf("@ampersandllc.co", "@gmail.com")
+        acceptableDomains.forEach{ domain ->
+            if(email.endsWith(domain, true)) return true
+        }
+
+        return false
+    }
+
+    fun isPasswordValid(): Boolean {
+
+        return (password.length > 5)
+    }
+}

@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -14,8 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ACCEPTED_EMAIL_DOMAIN
 import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.LOG_TAG
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class SignInActivity : AppCompatActivity() {
@@ -42,7 +47,10 @@ class SignInActivity : AppCompatActivity() {
 
         signInButton.setOnClickListener {
 
-            signIn()
+            GlobalScope.launch{
+
+                signIn()
+            }
         }
     }
 
@@ -81,6 +89,7 @@ class SignInActivity : AppCompatActivity() {
 
         // sign in
         showAnimation()
+
         viewModel
             .login(emailEdit.text.toString(), passwordEdit.text.toString())
             .observe(this, Observer { isLoggedIn ->
@@ -88,13 +97,11 @@ class SignInActivity : AppCompatActivity() {
                 stopAnimation()
                 if (isLoggedIn) {
 
+                    Log.i(LOG_TAG, "starting the contact exchange")
                     startActivity(Intent(this, ContactDisplayActivity::class.java))
                 }
             })
-        /*
-         * we listen for server side error or unknown error
-         * if any shows up we display in a dialog
-         */
+
         listenForServerErrors()
     }
 
@@ -122,7 +129,7 @@ class SignInActivity : AppCompatActivity() {
 
         if (!(email.endsWith("@ampersandllc.co") or email.endsWith("@gmail.com"))) {
 
-            showClientSideError("email provided is not accepted email: $email")
+            showClientSideError("email provided is not accepted; email: $email")
             return false
         }
 
@@ -134,7 +141,7 @@ class SignInActivity : AppCompatActivity() {
         val password = passwordEdit.text.toString()
         var isPasswordValid = (password.length > 5) as Boolean
 
-        if (isPasswordValid) showClientSideError("password provided is too short")
+        if (!isPasswordValid) showClientSideError("password provided is too short")
         return isPasswordValid
     }
 
@@ -164,8 +171,7 @@ class SignInActivity : AppCompatActivity() {
             .setTitle("Login Error")
             .setMessage("An error occurred during your login. Please try again in a few moments")
             .setNegativeButton("Cancel", null)
-            .setPositiveButton("Try Again", DialogInterface.OnClickListener { _, _ -> signIn() })
-            /*.setIcon()*/
+            .setPositiveButton("Try Again", null)
             .show()
     }
 

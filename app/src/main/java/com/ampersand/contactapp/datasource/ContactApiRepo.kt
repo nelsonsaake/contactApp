@@ -30,7 +30,7 @@ class ContactApiRepo {
         isReggeredSuccessful.value = false
     }
 
-    fun onApiCallFailure(t: Throwable){
+    fun onApiCallFailure(t: Throwable) {
         Log.e(
             LOG_TAG,
             "msg: ${t.localizedMessage}; \n localised msg: ${t.message}\n"
@@ -99,13 +99,13 @@ class ContactApiRepo {
         return isLoginSuccessful
     }
 
-    fun getProfile(email: String): LiveData<User>{
+    fun profile(email: String): LiveData<User> {
 
         var profile = MutableLiveData<User>()
 
         contactApiService.profile(email).enqueue(object : Callback<User> {
 
-            override fun onFailure(call: Call<User>, t: Throwable)  = onApiCallFailure(t)
+            override fun onFailure(call: Call<User>, t: Throwable) = onApiCallFailure(t)
 
             override fun onResponse(call: Call<User>, response: Response<User>) {
 
@@ -113,5 +113,70 @@ class ContactApiRepo {
             }
         })
         return profile
+    }
+
+    // faker
+    fun fakerRegister(requestBody: RegRequestBody): LiveData<Boolean> {
+
+        LoggedInUser.user = requestBody as User
+        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
+        val isSuccess = MutableLiveData<Boolean>()
+        isSuccess.value = true
+        return isSuccess
+    }
+
+    fun fakerLogin(email: String, password: String): LiveData<Boolean> {
+
+        LoggedInUser.user =
+            User(email, password, "Nelson", "Saake", "0548876758", "", "", "", "", "")
+        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
+        val isSuccess = MutableLiveData<Boolean>()
+        isSuccess.value = true
+        return isSuccess
+    }
+
+    private fun fakerName(): String {
+
+        val names = arrayOf(
+            "Nelson",
+            "James",
+            "John",
+            "Zebedy",
+            "Mahlakai",
+            "Joana",
+            "Aristotel",
+            "Kiyosaki",
+            "Robert",
+            "Nyce",
+            "Rajesh",
+            "Omid",
+            "Armin"
+        )
+        return names.random()
+    }
+
+    private fun fakerPhoto(): String {
+
+        val photoIndex = (1..8)
+        val location = "@drawable/"
+        return location + "photo" + photoIndex.random()
+    }
+
+    fun fakerProfile(email: String): LiveData<User> {
+
+        val user = MutableLiveData<User>()
+        user.value = User(
+            email,
+            "$email password",
+            fakerName(),
+            fakerName(),
+            "0548876758",
+            fakerPhoto(),
+            "",
+            "",
+            "",
+            ""
+        )
+        return user
     }
 }

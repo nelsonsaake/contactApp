@@ -1,11 +1,13 @@
 package com.ampersand.contactapp.signInregister.register
 
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,12 +19,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.LOG_TAG
 import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 import kotlinx.android.synthetic.main.activity_reg.*
 import kotlinx.android.synthetic.main.fragment_reg_page_add_photo.*
 import kotlinx.android.synthetic.main.fragment_reg_page_edit_photo.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 class RegActivity : AppCompatActivity(), View.OnClickListener {
@@ -97,13 +102,18 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
             regPasswordEdit.str(),
             regFirstNameEdit.str(),
             regLastNameEdit.str(),
-            photoToString(),
+//            photoToString(),
+            regPhotoUri.toString(),
             regRoleEdit.str(),
             regPhoneEdit.str(),
             regTwitterEdit.str(),
             regLinkedInEdit.str(),
             regWebsiteEdit.str()
         )
+
+        // TODO
+        // throw exception for the invalid fields for more detailed report to user
+        if(!regRequestBody.isValid()) return;
 
         viewModel.register(regRequestBody).observe(this, Observer { isRegistered ->
 
@@ -122,6 +132,8 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showServerSideError(err: String) {
+
+        if(err.isEmpty()) return
 
         AlertDialog.Builder(this)
             .setTitle("Register Error")
@@ -156,6 +168,7 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == PICK_IMAGE_REQUEST_CODE) {
+                Log.i(LOG_TAG, regPhotoUri.toString())
                 regPhotoUri = data?.data
                 displayPhoto(regPhotoUri.toString())
             }
@@ -184,9 +197,26 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
                 selectPhoto()
             }
             regButton -> {
-                register()
+                GlobalScope.launch{
+                    regButton.isEnabled = false
+                    val pd = showProgressDialog()
+                    register()
+                    closeProgressDialog(pd)
+                    regButton.isEnabled = true
+                }
             }
         }
+    }
+
+    private fun closeProgressDialog(pd: ProgressDialog) {
+        pd.cancel()
+    }
+
+    private fun showProgressDialog(): ProgressDialog {
+        return ProgressDialog.show(
+            this, "",
+            "Registering in...", true
+        )
     }
 }
 

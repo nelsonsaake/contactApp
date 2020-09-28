@@ -31,6 +31,8 @@ class RegEditPhotoFragment(val onClickListener: View.OnClickListener) : Fragment
         Picasso
             .with(context)
             .load(url)
+            .fit()
+            .centerCrop()
             .into(regProfilePhoto)
     }
 }

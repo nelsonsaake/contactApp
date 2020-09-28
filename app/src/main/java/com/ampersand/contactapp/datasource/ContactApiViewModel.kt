@@ -12,46 +12,49 @@ class ContactApiViewModel : ViewModel() {
 
     fun login(email: String, password: String): LiveData<Boolean> {
 
-        return repo.login(email, password)
+        return repo.fakerLogin(email, password)
     }
 
     fun encode(raw: String): String {
-
-        // TODO()
+        // use some encrypting algorithm to encrypt the raw
+        // and later decrypt
         return raw
     }
 
     fun decode(code: String): String {
-
-        // TODO()
         return code
     }
 
     fun getProfile(userCode: String): LiveData<User> {
 
         val email = decode(userCode)
-        return repo.getProfile(email)
+        return repo.fakerProfile(email)
     }
 
     fun register(regRequestBody: RegRequestBody): LiveData<Boolean> {
 
-        return repo.register(regRequestBody)
+        return repo.fakerRegister(regRequestBody)
     }
 
     fun addContact(lifecylcleOwner: LifecycleOwner, userCode: String) {
 
-        val email = decode(userCode)
-        repo.getProfile(email).observe(lifecylcleOwner, Observer { profile ->
+        /*
+        * right now all the data is fake, so we don't want to actually save anything
+        *
+        * */
 
-            PhoneBook()
-                .addContact(
-                    profile.firstName,
-                    profile.lastName,
-                    profile.phoneNumber,
-                    profile.email,
-                    profile.role
-                )
-        })
+//        val email = decode(userCode)
+//        repo.profile(email).observe(lifecylcleOwner, Observer { profile ->
+//
+//            PhoneBook()
+//                .addContact(
+//                    profile.firstName,
+//                    profile.lastName,
+//                    profile.phoneNumber,
+//                    profile.email,
+//                    profile.role
+//                )
+//        })
     }
 
     fun userCode(): String {
@@ -60,7 +63,7 @@ class ContactApiViewModel : ViewModel() {
         if(LoggedInUser.user != null){
             email = LoggedInUser.user?.email as String
         } else {
-            throw(Exception("User is null"))
+             throw(Exception("User is null"))
         }
         return encode(email)
     }
