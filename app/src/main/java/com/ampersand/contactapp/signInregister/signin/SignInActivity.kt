@@ -1,7 +1,6 @@
 package com.ampersand.contactapp.signInregister.signin
 
 import android.app.ProgressDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
@@ -13,19 +12,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
-import com.ampersand.contactapp.datasource.ACCEPTED_EMAIL_DOMAIN
-import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.LOG_TAG
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
 import kotlinx.android.synthetic.main.activity_sign_in.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 
 class SignInActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ContactApiViewModel
+    private lateinit var viewModel: ContactViewModel
     private lateinit var loggingInAnimationDialog: ProgressDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,17 +35,14 @@ class SignInActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
     }
 
     private fun onSignInButtonClicked() {
 
         signInButton.setOnClickListener {
 
-            GlobalScope.launch{
-
-                signIn()
-            }
+            signIn()
         }
     }
 

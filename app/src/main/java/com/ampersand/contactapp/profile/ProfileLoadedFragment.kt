@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.User
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.activity_contact_display.*
 import kotlinx.android.synthetic.main.fragment_profile_loaded.*
 
 class ProfileLoadedFragment : Fragment() {
@@ -21,11 +20,13 @@ class ProfileLoadedFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_profile_loaded, container, false)
     }
 
-    fun displayProfile(profile: User){
+    fun displayProfile(profile: User) {
 
         Picasso
             .with(context)
             .load(profile.photo)
+            .fit()
+            .centerCrop()
             .into(profilePhoto)
 
         profileNameText.text = "${profile.firstName} ${profile.lastName}"

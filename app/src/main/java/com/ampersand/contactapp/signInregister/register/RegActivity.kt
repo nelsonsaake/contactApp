@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
-import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.LOG_TAG
 import com.ampersand.contactapp.datasource.PICK_IMAGE_REQUEST_CODE
 import com.ampersand.contactapp.exchangecontanct.ContactDisplayActivity
@@ -34,7 +34,7 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
 
     private val addPhotoFragment = RegAddPhotoFragment(this)
     private val editPhotoFragment = RegEditPhotoFragment(this)
-    private lateinit var viewModel: ContactApiViewModel
+    private lateinit var viewModel: ContactViewModel
     private var regPhotoUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +50,7 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
     }
 
     private fun maskPassword() {

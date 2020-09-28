@@ -40,7 +40,7 @@ interface ContactApiService {
 
             val retrofit = Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("https://nsaake-ampersand-contact.herokuapp.com/")
+                .baseUrl("")
                 .build()
 
             return retrofit.create(ContactApiService::class.java)

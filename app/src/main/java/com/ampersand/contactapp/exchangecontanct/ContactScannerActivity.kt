@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
-import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
 import com.google.zxing.Result
@@ -17,7 +17,7 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
 
     private var scannerView: ZXingScannerView? = null
 
-    private lateinit var viewModel: ContactApiViewModel
+    private lateinit var viewModel: ContactViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -31,14 +31,14 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
     }
 
     private fun onSendQRClicked() {
 
         sendQRButton.setOnClickListener {
 
-            startActivity(Intent(this, ContactScannerActivity::class.java))
+            startActivity(Intent(this, ContactDisplayActivity::class.java))
         }
     }
 

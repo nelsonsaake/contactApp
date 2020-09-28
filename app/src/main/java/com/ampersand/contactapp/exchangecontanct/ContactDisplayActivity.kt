@@ -1,21 +1,19 @@
 package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
-import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 import com.ampersand.contactapp.datasource.LoggedInUser
 import com.ampersand.contactapp.profile.ProfileActivity
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
-import com.google.zxing.common.BitMatrix
 import com.journeyapps.barcodescanner.BarcodeEncoder
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_contact_display.*
@@ -23,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_contact_display.*
 
 class ContactDisplayActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ContactApiViewModel
+    private lateinit var viewModel: ContactViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,7 +37,7 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
     }
 
     private fun setupCustomToolbar() {
@@ -67,11 +65,13 @@ class ContactDisplayActivity : AppCompatActivity() {
 
     private fun displayLoggedInUserProfile() {
 
-        viewModel.getProfile(LoggedInUser.user?.email!!).observe(this, Observer { profile ->
+        viewModel.profile(LoggedInUser.user?.email!!).observe(this, Observer { profile ->
 
             Picasso
                 .with(this)
                 .load(profile.photo)
+                .fit()
+                .centerCrop()
                 .into(ecProfileImage)
 
             ecNameText.text = "${profile.firstName} ${profile.lastName}"

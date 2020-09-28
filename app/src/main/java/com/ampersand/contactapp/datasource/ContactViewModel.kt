@@ -3,29 +3,33 @@ package com.ampersand.contactapp.datasource
 import androidx.lifecycle.*
 import com.ampersand.contactapp.signInregister.register.model.RegRequestBody
 
-class ContactApiViewModel : ViewModel() {
+class ContactViewModel : ViewModel() {
 
-    private val repo = ContactApiRepo()
-
+    private val repo = ContactRepo()
     val loginError = repo.loginError
     val regError = repo.regError
 
-    fun login(email: String, password: String): LiveData<Boolean> {
-
-        return repo.fakerLogin(email, password)
-    }
-
     fun encode(raw: String): String {
+
         // use some encrypting algorithm to encrypt the raw
         // and later decrypt
         return raw
     }
 
     fun decode(code: String): String {
-        return code
+
+        // decode is called to decrypt the scanned code to a user email
+        // api provided to support the app is not available so
+        // we fake a decode
+        return repo.fakerUser().email
     }
 
-    fun getProfile(userCode: String): LiveData<User> {
+    fun login(email: String, password: String): LiveData<Boolean> {
+
+        return repo.fakerLogin(email, password)
+    }
+
+    fun profile(userCode: String): LiveData<User> {
 
         val email = decode(userCode)
         return repo.fakerProfile(email)

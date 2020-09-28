@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ContactApiRepo {
+class ContactRepo {
 
     val contactApiService = ContactApiService.create()
     val loginError = MutableLiveData<String>()
@@ -24,10 +24,9 @@ class ContactApiRepo {
 
     init {
 
-        loginError.value = ""
-        regError.value = ""
         isLoginSuccessful.value = false
         isReggeredSuccessful.value = false
+        fakerFactory()
     }
 
     fun onApiCallFailure(t: Throwable) {
@@ -115,25 +114,10 @@ class ContactApiRepo {
         return profile
     }
 
+    // the api provided is not available
+    // so fake data is used instead
     // faker
-    fun fakerRegister(requestBody: RegRequestBody): LiveData<Boolean> {
-
-        LoggedInUser.user = requestBody as User
-        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
-        val isSuccess = MutableLiveData<Boolean>()
-        isSuccess.value = true
-        return isSuccess
-    }
-
-    fun fakerLogin(email: String, password: String): LiveData<Boolean> {
-
-        LoggedInUser.user =
-            User(email, password, "Nelson", "Saake", "0548876758", "", "", "", "", "")
-        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
-        val isSuccess = MutableLiveData<Boolean>()
-        isSuccess.value = true
-        return isSuccess
-    }
+    private var fakerUsers = mutableMapOf<String, User>()
 
     private fun fakerName(): String {
 
@@ -162,21 +146,105 @@ class ContactApiRepo {
         return location + "photo" + photoIndex.random()
     }
 
-    fun fakerProfile(email: String): LiveData<User> {
+    private fun fakerRole(): String {
 
-        val user = MutableLiveData<User>()
-        user.value = User(
+        val roles = arrayOf(
+            "Supervisor",
+            "Backend Developer",
+            "Android Developer",
+            "Full Stack developer",
+            "IOS Developer",
+            "Human Resource Personnel",
+            "Director",
+            "Project Manager"
+        )
+
+        return roles.random()
+    }
+
+    fun fakerUser(): User {
+
+        val firstName = fakerName()
+        val lastName = fakerName()
+        val email = firstName + lastName + "@gmail.com"
+
+        return User(
             email,
             "$email password",
-            fakerName(),
-            fakerName(),
+            firstName,
+            lastName,
             "0548876758",
             fakerPhoto(),
-            "",
+            fakerRole(),
             "",
             "",
             ""
         )
+    }
+
+    private fun fakerUserWithEmailAndPassword(email: String, password: String) : User {
+
+        var user = fakerUsers[email]
+        if (user != null) return user
+
+        user = User(
+            email,
+            password,
+            fakerName(),
+            fakerName(),
+            "0548876758",
+            fakerPhoto(),
+            fakerRole(),
+            "", "", ""
+        )
+        fakerAddUser(user)
+        return user
+    }
+
+    private fun fakerUserWithEmail(email: String) : User {
+
+        val user = fakerUsers[email]
+        if (user != null) return user
+
+        return fakerUserWithEmailAndPassword(email, "$email password")
+    }
+
+    private fun fakerAddUser(user: User) {
+
+        fakerUsers.put(user.email, user)
+    }
+
+    private fun fakerFactory() {
+
+        for (i in 1..3) {
+            fakerAddUser(fakerUser())
+        }
+    }
+
+    fun fakerRegister(requestBody: RegRequestBody): LiveData<Boolean> {
+
+        val user = requestBody as User
+        fakerAddUser(user)
+        LoggedInUser.user = user
+        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
+        val isSuccess = MutableLiveData<Boolean>()
+        isSuccess.value = true
+        return isSuccess
+    }
+
+    fun fakerLogin(email: String, password: String): LiveData<Boolean> {
+
+        LoggedInUser.user = fakerUserWithEmailAndPassword(email, password)
+        LoggedInUser.token = "abcdefghijklmnopqrszuvwxyz1234567890"
+        val isSuccess = MutableLiveData<Boolean>()
+        isSuccess.value = true
+        return isSuccess
+    }
+
+    fun fakerProfile(email: String): LiveData<User> {
+
+        val user = MutableLiveData<User>()
+        user.value = fakerUserWithEmail(email)
         return user
     }
 }

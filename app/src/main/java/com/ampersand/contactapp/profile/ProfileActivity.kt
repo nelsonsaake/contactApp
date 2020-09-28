@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
-import com.ampersand.contactapp.datasource.ContactApiViewModel
+import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 
 class ProfileActivity : AppCompatActivity() {
 
-    lateinit var viewModel: ContactApiViewModel
+    lateinit var viewModel: ContactViewModel
     val profileLoadingFragment =
         ProfileLoadingFragment()
     val profileLoadedFragment =
@@ -31,14 +31,14 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun initViewModel() {
 
-        viewModel = ViewModelProvider(this).get(ContactApiViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
     }
 
     private fun loadProfile(email: String) {
 
         if(email == "") return
 
-        viewModel.getProfile(email).observe(this, Observer { user ->
+        viewModel.profile(email).observe(this, Observer { user ->
 
             profileLoadedFragment.displayProfile(user)
             showLoadedFragment()
