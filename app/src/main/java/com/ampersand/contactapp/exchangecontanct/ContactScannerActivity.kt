@@ -2,7 +2,6 @@ package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -10,14 +9,17 @@ import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
 import com.ampersand.contactapp.profile.ProfileActivity
-import com.google.zxing.Result
+import com.budiyev.android.codescanner.AutoFocusMode
+import com.budiyev.android.codescanner.CodeScanner
+import com.budiyev.android.codescanner.CodeScannerView
+import com.budiyev.android.codescanner.DecodeCallback
+import com.budiyev.android.codescanner.ErrorCallback
+import com.budiyev.android.codescanner.ScanMode
 import kotlinx.android.synthetic.main.activity_contact_scanner.*
-import me.dm7.barcodescanner.zxing.ZXingScannerView
 
-class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandler {
+class ContactScannerActivity : AppCompatActivity(){
 
-    private var scannerView: ZXingScannerView? = null
-
+    private lateinit var codeScanner: CodeScanner
     private lateinit var viewModel: ContactViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,30 +41,71 @@ class ContactScannerActivity : AppCompatActivity(), ZXingScannerView.ResultHandl
 
         sendQRButton.setOnClickListener {
 
-            startActivity(Intent(this, ContactDisplayActivity::class.java))
+           finish()
         }
     }
 
     private fun setupScanner() {
 
-        scannerView = ZXingScannerView(this)
-        setContentView(scannerView)
+        val scannerView = findViewById<CodeScannerView>(R.id.scanner_view)
 
-        val scannerContainer = findViewById<FrameLayout>(R.id.scannerContainer)
-        scannerContainer.addView(scannerView)
-        scannerView?.setResultHandler(this)
-        scannerView?.startCamera()
+        codeScanner = CodeScanner(this, scannerView)
+
+        // Parameters (default values)
+        // or CAMERA_FRONT or specific camera id
+        codeScanner.camera = CodeScanner.CAMERA_BACK
+
+        // list of type BarcodeFormat,
+        codeScanner.formats = CodeScanner.ALL_FORMATS
+
+        // ex. listOf(BarcodeFormat.QR_CODE)
+        // or CONTINUOUS
+        codeScanner.autoFocusMode = AutoFocusMode.SAFE
+
+        // or CONTINUOUS or PREVIEW
+        codeScanner.scanMode = ScanMode.SINGLE
+
+        // Whether to enable auto focus or not
+        codeScanner.isAutoFocusEnabled = true
+
+        // Whether to enable flash or not
+        codeScanner.isFlashEnabled = false
+
+        // Callbacks
+        codeScanner.decodeCallback = DecodeCallback {
+            runOnUiThread {
+                Toast.makeText(this, "Scan result: ${it.text}", Toast.LENGTH_LONG).show()
+                handleResult(it.text)
+            }
+        }
+        codeScanner.errorCallback = ErrorCallback {
+            // or ErrorCallback.SUPPRESS
+            runOnUiThread {
+                Toast.makeText(
+                    this, "Camera initialization error: ${it.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        scannerView.setOnClickListener {
+            codeScanner.startPreview()
+        }
     }
 
-    public override fun onDestroy() {
-
-        super.onDestroy()
-        scannerView?.stopCamera()
+    override fun onResume() {
+        super.onResume()
+        codeScanner.startPreview()
     }
 
-    override fun handleResult(result: Result) {
+    override fun onPause() {
+        codeScanner.releaseResources()
+        super.onPause()
+    }
 
-        val userCode = result.text
+    fun handleResult(result: String) {
+
+        val userCode = result
         Toast.makeText(this, userCode, Toast.LENGTH_SHORT).show()
         saveContactInPhoneBook(userCode)
         showProfile(userCode)

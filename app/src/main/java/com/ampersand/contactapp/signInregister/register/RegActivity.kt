@@ -197,13 +197,13 @@ class RegActivity : AppCompatActivity(), View.OnClickListener {
                 selectPhoto()
             }
             regButton -> {
+                regButton.isEnabled = false
                 GlobalScope.launch{
-                    regButton.isEnabled = false
                     val pd = showProgressDialog()
                     register()
                     closeProgressDialog(pd)
-                    regButton.isEnabled = true
                 }
+                regButton.isEnabled = true
             }
         }
     }

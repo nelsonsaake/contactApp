@@ -1,8 +1,10 @@
 package com.ampersand.contactapp.profile
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -10,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.ampersand.contactapp.R
 import com.ampersand.contactapp.datasource.ContactViewModel
 import com.ampersand.contactapp.datasource.EMAIL_INTENT_EXTRA
+import com.ampersand.contactapp.datasource.LOG_TAG
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -36,7 +39,11 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun loadProfile(email: String) {
 
-        if(email == "") return
+        if(email == "") {
+            Log.e(LOG_TAG, "Email provided to load profile is empty: PofileActivity::loadProfile()")
+            Toast.makeText(this, "Bad profile", Toast.LENGTH_SHORT).show()
+            finish()
+        }
 
         viewModel.profile(email).observe(this, Observer { user ->
 

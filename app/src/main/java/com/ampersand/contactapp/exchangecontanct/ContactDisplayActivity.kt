@@ -1,6 +1,7 @@
 package com.ampersand.contactapp.exchangecontanct
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -67,12 +68,9 @@ class ContactDisplayActivity : AppCompatActivity() {
 
         viewModel.profile(LoggedInUser.user?.email!!).observe(this, Observer { profile ->
 
-            Picasso
-                .with(this)
-                .load(profile.photo)
-                .fit()
-                .centerCrop()
-                .into(ecProfileImage)
+
+            // ec = contact exchange
+            ecProfileImage.setImageBitmap(BitmapFactory.decodeFile(profile.photo))
 
             ecNameText.text = "${profile.firstName} ${profile.lastName}"
 
